@@ -1,26 +1,33 @@
 import React, { useState } from 'react'
+import { useForm } from "react-hook-form"
 
 export default function Index() {
-    const [value, setValue] = useState("")
+    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+
     const [shoppingList, setShoppingList] = useState([
-        { text: "Gâteaux apéritifs" },
-        { text: "Pain de mie" },
-        { text: "Fromage râpe" }
-    ]);
+        {
+            french: "la soup",
+            german: "die Suppet",
+            dutch: "soep",
+        },
+        {
+            french: "le pignon de pin",
+            german: "der Pinienkern",
+            dutch: "pijnboompitten",
+        },
+        {
+            french: "le cornichon",
+            german: "die Essiggurke",
+            dutch: "augurk",
+        }]
+    );
 
-    const onSubmitHandler = (e) => {
-        e.preventDefault()
-        console.log(value)
-        if (!value) return
-        addShoppingListItem(value)
-        console.log("submitted")
-        setValue("")
-    }
 
-    const addShoppingListItem = text => {
-        console.log("item, added", text)
-        const newListItem = [...shoppingList, { text }]
-        setShoppingList(newListItem)
+    const onSubmit = product => {
+        console.log(product)
+        const newListItem = product
+        const newShoppingList = [...shoppingList, newListItem]
+        setShoppingList(newShoppingList)
     }
 
     return (
@@ -28,24 +35,22 @@ export default function Index() {
             <p>Lists: </p>
             <ul>
                 {shoppingList.map(element => {
+                    const productNames = Object.values(element)
                     return <div className="flex px-2">
                         <input type="checkbox" />
-                        <li className="mx-4">{element.text}</li>
+                        <li className="mx-4">{productNames.join(" / ")}</li>
                         <button>X</button>
                     </div>
                 })}
             </ul>
 
-            <form onSubmit={(e) => onSubmitHandler(e)}>
-                <label htmlFor=""> Enter your shopping item
-                    <input
-                        type="text"
-                        className="border mx-4"
-                        value={value}
-                        onChange={e => setValue(e.target.value)}
-                    />
-                </label>
-                <button type="submit">Submit</button>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <input  {...register("french")} placeholder="french" />
+                <input  {...register("german")} placeholder="german" />
+                <input  {...register("dutch")} placeholder="dutch" />
+                {errors.exampleRequired && <span>This field is required</span>}
+
+                <input type="submit" />
             </form>
         </div>
     )
