@@ -49,17 +49,32 @@ export default function Index() {
         setShoppingList(newShoppingList)
     }
 
+    const handleChange = async item => {
+        const productList = [...shoppingList]
+        await productList.map(product => product.id == item.target.id ? product.checked = !product.checked : null)
+        setShoppingList(productList)
+    }
+
     return (
         <div className="bg-gray-200 p-4">
             <p>Lists: </p>
             <ul>
                 {shoppingList.map(element => {
                     const productNames = Object.values(element.productName)
-                    return <div className="flex px-2">
-                        <input type="checkbox" />
-                        <li className="mx-4">{productNames.join(" / ")}</li>
-                        <button>X</button>
-                    </div>
+                    const productId = element.id
+                    console.log(productId)
+                    return <li className="mx-4">
+                        <label className="flex">
+                            <input
+                                className="mx-2"
+                                type="checkbox"
+                                id={productId}
+                                onChange={handleChange}
+                            />
+                            <p>{productNames.join(" / ")}</p>
+                            <button className="mx-2"> X</button>
+                        </label>
+                    </li>
                 })}
             </ul>
 
