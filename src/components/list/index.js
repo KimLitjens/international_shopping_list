@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
+import styles from './list.styles'
 
 export default function Index() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -59,11 +60,11 @@ export default function Index() {
         <div className="bg-gray-200 p-4">
             <p>Lists: </p>
             <ul>
-                {shoppingList.map(element => {
+                {shoppingList.filter(element => !element.checked).map(element => {
                     const productNames = Object.values(element.productName)
                     const productId = element.id
                     console.log(productId)
-                    return <li className="mx-4">
+                    return <li className={styles.li}>
                         <label className="flex">
                             <input
                                 className="mx-2"
@@ -71,7 +72,7 @@ export default function Index() {
                                 id={productId}
                                 onChange={handleChange}
                             />
-                            <p>{productNames.join(" / ")}</p>
+                            <p className={styles.p}>{productNames.join(" / ")}</p>
                             <button className="mx-2"> X</button>
                         </label>
                     </li>
@@ -86,6 +87,26 @@ export default function Index() {
 
                 <input className="bg-yellow-500" type="submit" />
             </form>
+            <ul>
+                {shoppingList.filter(element => element.checked).map(element => {
+                    const productNames = Object.values(element.productName)
+                    const productId = element.id
+                    const checked = element.checked
+                    console.log(productId)
+                    return <li className={styles.li}>
+                        <label className="flex">
+                            <input
+                                className="mx-2"
+                                type="checkbox"
+                                id={productId}
+                                onChange={handleChange}
+                            />
+                            <p className={styles.p({ checked })}>{productNames.join(" / ")}</p>
+                            <button className="mx-2"> X</button>
+                        </label>
+                    </li>
+                })}
+            </ul>
         </div>
     )
 }
