@@ -59,25 +59,47 @@ export default function Index() {
     return (
         <div className="bg-gray-200 p-4">
             <p>Lists: </p>
-            <ul>
-                {shoppingList.filter(element => !element.checked).map(element => {
-                    const productNames = Object.values(element.productName)
-                    const productId = element.id
-                    console.log(productId)
-                    return <li className={styles.li}>
-                        <label className="flex">
-                            <input
-                                className="mx-2"
-                                type="checkbox"
-                                id={productId}
-                                onChange={handleChange}
-                            />
-                            <p className={styles.p}>{productNames.join(" / ")}</p>
-                            <button className="mx-2"> X</button>
-                        </label>
-                    </li>
-                })}
-            </ul>
+            {shoppingList.some(element => !element.checked) ?
+                <table class="table-auto">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>French</th>
+                            <th>German</th>
+                            <th>Dutch</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {shoppingList.filter(element => !element.checked).map(element => {
+                            const productName = element.productName
+                            const productId = element.id
+
+                            return <tr >
+                                <td className="px-2">
+                                    <label >
+                                        <input
+                                            className="mx-2"
+                                            type="checkbox"
+                                            id={productId}
+                                            onChange={handleChange}
+                                        />
+                                    </label>
+                                </td>
+                                <td className="px-2">
+                                    {productName.french}
+                                </td>
+                                <td className="px-2">
+                                    {productName.german}
+                                </td>
+                                <td className="px-2">
+                                    {productName.dutch}
+                                </td>
+                                <button className="mx-2"> X</button>
+                            </tr>
+                        })}
+                    </tbody>
+                </table> : null}
 
             <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
                 <input className="mr-4" {...register("french")} placeholder="french" />
@@ -87,26 +109,54 @@ export default function Index() {
 
                 <input className="bg-yellow-500" type="submit" />
             </form>
-            <ul>
-                {shoppingList.filter(element => element.checked).map(element => {
-                    const productNames = Object.values(element.productName)
-                    const productId = element.id
-                    const checked = element.checked
-                    console.log(productId)
-                    return <li className={styles.li}>
-                        <label className="flex">
-                            <input
-                                className="mx-2"
-                                type="checkbox"
-                                id={productId}
-                                onChange={handleChange}
-                            />
-                            <p className={styles.p({ checked })}>{productNames.join(" / ")}</p>
-                            <button className="mx-2"> X</button>
-                        </label>
-                    </li>
-                })}
-            </ul>
+
+            {shoppingList.some(element => element.checked) ?
+                <table class="table-auto">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>French</th>
+                            <th>German</th>
+                            <th>Dutch</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {shoppingList.filter(element => element.checked).map(element => {
+                            const productName = element.productName
+                            const productId = element.id
+                            const checked = element.checked
+                            return <tr >
+                                <td className="px-2">
+                                    <label >
+                                        <input
+                                            className="mx-2"
+                                            type="checkbox"
+                                            id={productId}
+                                            onChange={handleChange}
+                                        />
+                                    </label>
+                                </td>
+                                <td className="px-2">
+                                    <p className={styles.p({ checked })}>
+                                        {productName.french}
+                                    </p>
+                                </td>
+                                <td className="px-2">
+                                    <p className={styles.p({ checked })}>
+                                        {productName.german}
+                                    </p>
+                                </td>
+                                <td className="px-2">
+                                    <p className={styles.p({ checked })}>
+                                        {productName.dutch}
+                                    </p>
+                                </td>
+                                <button className="mx-2"> X</button>
+                            </tr>
+                        })}
+                    </tbody>
+                </table> : null}
         </div>
     )
 }
