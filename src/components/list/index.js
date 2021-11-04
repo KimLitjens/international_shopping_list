@@ -131,6 +131,7 @@ export default function Index() {
                                             type="checkbox"
                                             id={productId}
                                             onChange={handleChange}
+                                            checked={false}
                                         />
                                     </label>
                                 </td>
@@ -188,6 +189,7 @@ export default function Index() {
                                             type="checkbox"
                                             id={productId}
                                             onChange={handleChange}
+                                            checked
                                         />
                                     </label>
                                 </td>
