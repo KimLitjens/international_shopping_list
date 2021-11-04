@@ -1,12 +1,16 @@
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
 import styles from './list.styles'
+import SearchBar from '../searchBar'
 
 export default function Index() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { search } = window.location;
+    const query = new URLSearchParams(search).get('s');
+    const [searchQuery, setSearchQuery] = useState(query || '');
+
 
     const [shoppingList, setShoppingList] = useState([
-
         {
             productName: {
                 french: "la soup",
@@ -36,9 +40,43 @@ export default function Index() {
             },
             checked: false,
             id: 235123
-        }]
+        },
+        {
+            productName: {
+                french: "la pomme de terre",
+                german: "die Kartoffeln",
+                dutch: "ardappel",
+
+            },
+            checked: true,
+            id: 1636038161272
+        },
+        {
+            productName: {
+                french: "le haricots verts",
+                german: "die grüne Bohne",
+                dutch: "sperziebonen",
+
+            },
+            checked: false,
+            id: 1636038154864
+        },]
     );
 
+
+
+    const filterProducts = (shoppingList, searchQuery) => {
+        if (!searchQuery) {
+            return shoppingList;
+        }
+
+        return shoppingList.filter((product) => {
+            const productName = product.productName.french.toLowerCase();
+            return productName.includes(searchQuery);
+        });
+    };
+
+    const filterdProducts = filterProducts(shoppingList, searchQuery);
 
     const onSubmit = product => {
         const newListItem = {
@@ -57,8 +95,6 @@ export default function Index() {
     }
 
     const handleDelete = async item => {
-        console.log(item.target.id)
-        console.log(shoppingList[0].id)
         const newShoppingList = []
         await shoppingList.map(product => product.id != item.target.id ? newShoppingList.push(product) : null)
         setShoppingList(newShoppingList)
@@ -66,6 +102,10 @@ export default function Index() {
 
     return (
         <div className="bg-gray-200 p-4">
+            <SearchBar
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
             <p>Lists: </p>
             {shoppingList.some(element => !element.checked) ?
                 <table class="table-auto">
@@ -79,7 +119,7 @@ export default function Index() {
                         </tr>
                     </thead>
                     <tbody>
-                        {shoppingList.filter(element => !element.checked).map(element => {
+                        {filterdProducts.filter(element => !element.checked).map(element => {
                             const productName = element.productName
                             const productId = element.id
 
@@ -136,7 +176,7 @@ export default function Index() {
                         </tr>
                     </thead>
                     <tbody>
-                        {shoppingList.filter(element => element.checked).map(element => {
+                        {filterdProducts.filter(element => element.checked).map(element => {
                             const productName = element.productName
                             const productId = element.id
                             const checked = element.checked
