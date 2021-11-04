@@ -56,6 +56,14 @@ export default function Index() {
         setShoppingList(productList)
     }
 
+    const handleDelete = async item => {
+        console.log(item.target.id)
+        console.log(shoppingList[0].id)
+        const newShoppingList = []
+        await shoppingList.map(product => product.id != item.target.id ? newShoppingList.push(product) : null)
+        setShoppingList(newShoppingList)
+    }
+
     return (
         <div className="bg-gray-200 p-4">
             <p>Lists: </p>
@@ -95,7 +103,13 @@ export default function Index() {
                                 <td className="px-2">
                                     {productName.dutch}
                                 </td>
-                                <button className="mx-2"> X</button>
+                                <button
+                                    className="mx-2"
+                                    id={productId}
+                                    onClick={handleDelete}
+                                >
+                                    X
+                                </button>
                             </tr>
                         })}
                     </tbody>
@@ -152,7 +166,13 @@ export default function Index() {
                                         {productName.dutch}
                                     </p>
                                 </td>
-                                <button className="mx-2"> X</button>
+                                <button
+                                    className="mx-2"
+                                    id={productId}
+                                    onClick={handleDelete}
+                                >
+                                    X
+                                </button>
                             </tr>
                         })}
                     </tbody>
