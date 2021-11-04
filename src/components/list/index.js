@@ -71,8 +71,8 @@ export default function Index() {
         }
 
         return shoppingList.filter((product) => {
-            const productName = product.productName.french.toLowerCase();
-            return productName.includes(searchQuery);
+            const productNames = Object.values(product.productName);
+            return productNames.some(product => product.toLowerCase().includes(searchQuery));
         });
     };
 
