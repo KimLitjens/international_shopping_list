@@ -45,7 +45,7 @@ export default function Index() {
             productName: {
                 french: "la pomme de terre",
                 german: "die Kartoffeln",
-                dutch: "ardappel",
+                dutch: "aardappel",
 
             },
             checked: true,
