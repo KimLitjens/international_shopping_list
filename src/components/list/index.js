@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import styles from './list.styles'
 import SearchBar from '../searchBar'
 
-export default function Index() {
+export default function List() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const { search } = window.location;
     const query = new URLSearchParams(search).get('s');

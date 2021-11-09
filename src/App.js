@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
-        <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
+        <Route path={ROUTES.LOG_IN} element={<SignIn />} />
         <Route path={ROUTES.HOMEPAGE} element={<Homepage />} />
       </Routes>
     </Router>
