@@ -101,12 +101,12 @@ export default function List() {
     }
 
     return (
-        <div className="bg-gray-200 p-4">
+        <div className="flex flex-col items-center bg-gray-200  p-4">
             <SearchBar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
             />
-            <p>Lists: </p>
+            <p className="my-2">Shopping List: </p>
             {shoppingList.some(element => !element.checked) ?
                 <table class="table-auto">
                     <thead>
@@ -162,7 +162,7 @@ export default function List() {
                 <input className="mr-4" {...register("dutch")} placeholder="dutch" />
                 {errors.exampleRequired && <span>This field is required</span>}
 
-                <input className="bg-yellow-500" type="submit" />
+                <input className="bg-yellow-500 px-2 mx-2" type="submit" />
             </form>
 
             {shoppingList.some(element => element.checked) ?
