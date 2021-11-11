@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
 import styles from './list.styles'
 import SearchBar from '../searchBar'
+import { ListItem } from '../../components'
 
 export default function List() {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const { search } = window.location;
     const query = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(query || '');
+    const [editing, setEditing] = useState(false)
 
 
     const [shoppingList, setShoppingList] = useState([
@@ -63,8 +65,6 @@ export default function List() {
         },]
     );
 
-
-
     const filterProducts = (shoppingList, searchQuery) => {
         if (!searchQuery) {
             return shoppingList;
@@ -94,11 +94,27 @@ export default function List() {
         setShoppingList(productList)
     }
 
+    const handleEditing = () => {
+        setEditing(true)
+    }
+
+    const handleUpdatedDone = event => {
+        console.log(event.key)
+        if (event.key === "Enter") {
+            setEditing(false)
+        }
+    }
+
     const handleDelete = async item => {
         const newShoppingList = []
         await shoppingList.map(product => product.id != item.target.id ? newShoppingList.push(product) : null)
         setShoppingList(newShoppingList)
     }
+
+    const setUpdate = (updatedTitle, id) => {
+        console.log(updatedTitle, id)
+    }
+
 
     return (
         <div className="flex flex-col items-center bg-gray-200  p-4">
@@ -108,7 +124,7 @@ export default function List() {
             />
             <p className="my-2">Shopping List: </p>
             {shoppingList.some(element => !element.checked) ?
-                <table class="table-auto">
+                <table className="table-auto">
                     <thead>
                         <tr>
                             <th></th>
@@ -166,7 +182,7 @@ export default function List() {
             </form>
 
             {shoppingList.some(element => element.checked) ?
-                <table class="table-auto">
+                <table className="table-auto">
                     <thead>
                         <tr>
                             <th></th>
@@ -180,8 +196,8 @@ export default function List() {
                         {filterdProducts.filter(element => element.checked).map(element => {
                             const productName = element.productName
                             const productId = element.id
-                            const checked = element.checked
-                            return <tr >
+                            return <tr className="line-through"
+                            >
                                 <td className="px-2">
                                     <label >
                                         <input
@@ -193,21 +209,11 @@ export default function List() {
                                         />
                                     </label>
                                 </td>
-                                <td className="px-2">
-                                    <p className={styles.p({ checked })}>
-                                        {productName.french}
-                                    </p>
-                                </td>
-                                <td className="px-2">
-                                    <p className={styles.p({ checked })}>
-                                        {productName.german}
-                                    </p>
-                                </td>
-                                <td className="px-2">
-                                    <p className={styles.p({ checked })}>
-                                        {productName.dutch}
-                                    </p>
-                                </td>
+                                {Object.entries(productName).map(([language, productName]) => {
+                                    return <ListItem language={language} productName={productName} />
+                                })}
+
+
                                 <button
                                     className="mx-2"
                                     id={productId}
