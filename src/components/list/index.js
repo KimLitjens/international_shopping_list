@@ -1,15 +1,13 @@
 import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
-import styles from './list.styles'
 import SearchBar from '../searchBar'
 import { ListItem } from '../../components'
 
 export default function List() {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const { search } = window.location;
     const query = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(query || '');
-    const [editing, setEditing] = useState(false)
 
 
     const [shoppingList, setShoppingList] = useState([
@@ -88,34 +86,6 @@ export default function List() {
         setShoppingList(newShoppingList)
     }
 
-    const handleChange = async item => {
-        const productList = [...shoppingList]
-        await productList.map(product => product.id == item.target.id ? product.checked = !product.checked : null)
-        setShoppingList(productList)
-    }
-
-    const handleEditing = () => {
-        setEditing(true)
-    }
-
-    const handleUpdatedDone = event => {
-        console.log(event.key)
-        if (event.key === "Enter") {
-            setEditing(false)
-        }
-    }
-
-    const handleDelete = async item => {
-        const newShoppingList = []
-        await shoppingList.map(product => product.id != item.target.id ? newShoppingList.push(product) : null)
-        setShoppingList(newShoppingList)
-    }
-
-    const setUpdate = (updatedTitle, id) => {
-        console.log(updatedTitle, id)
-    }
-
-
     return (
         <div className="flex flex-col items-center bg-gray-200  p-4">
             <SearchBar
@@ -123,7 +93,7 @@ export default function List() {
                 setSearchQuery={setSearchQuery}
             />
             <p className="my-2">Shopping List: </p>
-            {shoppingList.some(element => !element.checked) ?
+            {filterdProducts.some(element => !element.checked) ?
                 <table className="table-auto">
                     <thead>
                         <tr>
@@ -134,42 +104,13 @@ export default function List() {
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {filterdProducts.filter(element => !element.checked).map(element => {
-                            const productName = element.productName
-                            const productId = element.id
-
-                            return <tr >
-                                <td className="px-2">
-                                    <label >
-                                        <input
-                                            className="mx-2"
-                                            type="checkbox"
-                                            id={productId}
-                                            onChange={handleChange}
-                                            checked={false}
-                                        />
-                                    </label>
-                                </td>
-                                <td className="px-2">
-                                    {productName.french}
-                                </td>
-                                <td className="px-2">
-                                    {productName.german}
-                                </td>
-                                <td className="px-2">
-                                    {productName.dutch}
-                                </td>
-                                <button
-                                    className="mx-2"
-                                    id={productId}
-                                    onClick={handleDelete}
-                                >
-                                    X
-                                </button>
-                            </tr>
-                        })}
-                    </tbody>
+                    {filterdProducts.filter(product => !product.checked).map(product => {
+                        return <ListItem
+                            product={product}
+                            shoppingList={shoppingList}
+                            setShoppingList={setShoppingList}
+                        />
+                    })}
                 </table> : null}
 
             <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
@@ -181,7 +122,7 @@ export default function List() {
                 <input className="bg-yellow-500 px-2 mx-2" type="submit" />
             </form>
 
-            {shoppingList.some(element => element.checked) ?
+            {filterdProducts.some(element => element.checked) ?
                 <table className="table-auto">
                     <thead>
                         <tr>
@@ -192,38 +133,13 @@ export default function List() {
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {filterdProducts.filter(element => element.checked).map(element => {
-                            const productName = element.productName
-                            const productId = element.id
-                            return <tr className="line-through"
-                            >
-                                <td className="px-2">
-                                    <label >
-                                        <input
-                                            className="mx-2"
-                                            type="checkbox"
-                                            id={productId}
-                                            onChange={handleChange}
-                                            checked
-                                        />
-                                    </label>
-                                </td>
-                                {Object.entries(productName).map(([language, productName]) => {
-                                    return <ListItem language={language} productName={productName} />
-                                })}
-
-
-                                <button
-                                    className="mx-2"
-                                    id={productId}
-                                    onClick={handleDelete}
-                                >
-                                    X
-                                </button>
-                            </tr>
-                        })}
-                    </tbody>
+                    {filterdProducts.filter(product => product.checked).map(product => {
+                        return <ListItem
+                            product={product}
+                            shoppingList={shoppingList}
+                            setShoppingList={setShoppingList}
+                        />
+                    })}
                 </table> : null}
         </div>
     )
