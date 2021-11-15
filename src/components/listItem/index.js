@@ -31,7 +31,6 @@ export default function ListItem({
         const newShoppingList = [...shoppingList]
         newShoppingList.find(item => item.id == id).productName[language] = value
         setShoppingList(newShoppingList)
-        console.log(shoppingList[0])
     }
 
     const handleChange = async item => {
