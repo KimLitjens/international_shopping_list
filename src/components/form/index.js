@@ -4,9 +4,8 @@ import styles from './form.styles'
 import { firebaseApp, db } from '../../firebase'
 import * as ROUTES from '../../constants/routes'
 import { setDoc, doc } from "firebase/firestore"
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useForm } from "react-hook-form";
-import { data } from "autoprefixer";
 
 export default function Form({ type }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -14,22 +13,9 @@ export default function Form({ type }) {
     const navigate = useNavigate();
     const auth = getAuth()
 
-    createUserWithEmailAndPassword(auth, data.email, data.password)
-        .then((userCredential) => {
-            // Signed in 
-            const user = userCredential.user;
-            // ...
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            // ..
-        });
-
     const onSubmit = async (data) => {
-        await createUserWithEmailAndPassword(auth, data.email, data.password)
+        type === "signUp" ? await createUserWithEmailAndPassword(auth, data.email, data.password)
             .then((userCredential) => {
-                // Signed in 
                 const user = userCredential.user;
                 updateProfile(user, {
                     displayName: data.username
@@ -48,9 +34,18 @@ export default function Form({ type }) {
             })
             .catch((error) => {
                 console.log(error)
-            });
-
-    }
+            })
+            : await signInWithEmailAndPassword(auth, data.email, data.password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log(`${user.displayName} is signed in`)
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                });
+        navigate('/')
+    };
     return (
         <div className={styles.Page}>
             <div className={styles.Container}>
