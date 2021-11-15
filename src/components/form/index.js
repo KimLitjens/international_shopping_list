@@ -1,17 +1,59 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { Link } from 'react-router-dom'
-import * as ROUTES from '../../constants/routes'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import styles from './form.styles'
-
+import { firebaseApp, db } from '../../firebase'
+import * as ROUTES from '../../constants/routes'
+import { setDoc, doc } from "firebase/firestore"
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useForm } from "react-hook-form";
+import { data } from "autoprefixer";
 
 export default function Form({ type }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
+    const auth = getAuth()
 
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+        .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+        });
+
+    const onSubmit = async (data) => {
+        await createUserWithEmailAndPassword(auth, data.email, data.password)
+            .then((userCredential) => {
+                // Signed in 
+                const user = userCredential.user;
+                updateProfile(user, {
+                    displayName: data.username
+                })
+
+                setDoc(doc(db, 'users', user.uid), {
+                    userId: user.uid,
+                    username: data.username.toLowerCase(),
+                    firstName: data.firstName.toLowerCase(),
+                    lastName: data.lastName.toLowerCase(),
+                    emailAddress: data.email.toLowerCase(),
+                    dateCreated: Date.now()
+                })
+                console.log(data)
+
+            })
+            .catch((error) => {
+                console.log(error)
+            });
+
+    }
     return (
         <div className={styles.Page}>
-            <container className={styles.Container}>
+            <div className={styles.Container}>
                 <div className={styles.InsideContainer}>
                     <h1 className={styles.Title}>
                         {type === "logIn" ? "Log in" : "Sign up"}
@@ -80,7 +122,8 @@ export default function Form({ type }) {
                         </Link>.
                     </div>
                 </div>
-            </container>
+            </div>
         </div>
-    );
+
+    )
 }
