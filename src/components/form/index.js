@@ -13,39 +13,53 @@ export default function Form({ type }) {
     const navigate = useNavigate();
     const auth = getAuth()
 
-    const onSubmit = async (data) => {
-        type === "signUp" ? await createUserWithEmailAndPassword(auth, data.email, data.password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                updateProfile(user, {
-                    displayName: data.username
-                })
+    const formDetails = {
+        signUp: async (data) => {
+            await createUserWithEmailAndPassword(auth, data.email, data.password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    updateProfile(user, {
+                        displayName: data.username
+                    })
 
-                setDoc(doc(db, 'users', user.uid), {
-                    userId: user.uid,
-                    username: data.username.toLowerCase(),
-                    firstName: data.firstName.toLowerCase(),
-                    lastName: data.lastName.toLowerCase(),
-                    emailAddress: data.email.toLowerCase(),
-                    dateCreated: Date.now()
-                })
-                console.log(data)
+                    setDoc(doc(db, 'users', user.uid), {
+                        userId: user.uid,
+                        username: data.username.toLowerCase(),
+                        firstName: data.firstName.toLowerCase(),
+                        lastName: data.lastName.toLowerCase(),
+                        emailAddress: data.email.toLowerCase(),
+                        dateCreated: Date.now()
+                    })
+                    console.log(data)
 
-            })
-            .catch((error) => {
-                console.log(error)
-            })
-            : await signInWithEmailAndPassword(auth, data.email, data.password)
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+        },
+        logIn: async (data) => {
+            await signInWithEmailAndPassword(auth, data.email, data.password)
                 .then((userCredential) => {
                     const user = userCredential.user;
                     console.log(`${user.displayName} is signed in`)
                 })
                 .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                });
-        navigate('/')
+                    console.log(error)
+                })
+        }
     };
+
+    const onSubmit = async (e) => {
+        try {
+            if (firebaseApp) {
+                await formDetails[type](e);
+                navigate('/');
+            }
+        } catch (error) {
+            setErrorMessage(error.message)
+        }
+    };
+
     return (
         <div className={styles.Page}>
             <div className={styles.Container}>
@@ -102,6 +116,7 @@ export default function Form({ type }) {
                             placeholder="password"
                             type="password"
                         />
+                        {errorMessage && <p>{errorMessage}</p>}
                         <input
                             className={styles.Submit}
                             type="submit"
