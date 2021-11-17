@@ -12,9 +12,9 @@ export default function ListItem({
 
 
     const handleDelete = async item => {
-        const newShoppingList = []
-        await shoppingList.map(product => product.id != item.target.id ? newShoppingList.push(product) : null)
-        setShoppingList(newShoppingList)
+        const productList = [...shoppingList]
+        await productList.map(product => product.id == item.target.id ? product.deleted = !product.deleted : null)
+        setShoppingList(productList)
     }
 
     const handleUpdatedDone = event => {
@@ -40,46 +40,44 @@ export default function ListItem({
     }
 
     return (
-        <tbody>
-            <tr className={product.checked ? "line-through" : null}>
-                <td className="px-2">
-                    <label >
-                        <input
-                            className="mx-2"
-                            type="checkbox"
-                            id={productId}
-                            onChange={handleChange}
-                            checked={product.checked ? true : false}
-                        />
-                    </label>
+        <tr className={product.checked ? "line-through" : null} key="something" >
+            <td className="px-2">
+                <label >
+                    <input
+                        className="mx-2"
+                        type="checkbox"
+                        id={productId}
+                        onChange={handleChange}
+                        checked={product.checked ? true : false}
+                    />
+                </label>
+            </td>
+            {Object.entries(productNames).map(([language, productNames]) => {
+                return <td className="px-2">
+                    <p className={styles.p({ editing })}
+                        onDoubleClick={handleEditing}
+                    >
+                        {productNames}
+                    </p>
+                    <input
+                        type="text"
+                        className={!editing ? "hidden" : null}
+                        value={productNames}
+                        onChange={e => {
+                            handleOnChange(language, e.target.id, e.target.value)
+                        }}
+                        id={productId}
+                        onKeyDown={handleUpdatedDone}
+                    />
                 </td>
-                {Object.entries(productNames).map(([language, productNames]) => {
-                    return <td className="px-2">
-                        <p className={styles.p({ editing })}
-                            onDoubleClick={handleEditing}
-                        >
-                            {productNames}
-                        </p>
-                        <input
-                            type="text"
-                            className={!editing ? "hidden" : null}
-                            value={productNames}
-                            onChange={e => {
-                                handleOnChange(language, e.target.id, e.target.value)
-                            }}
-                            id={productId}
-                            onKeyDown={handleUpdatedDone}
-                        />
-                    </td>
-                })}
-                <button
-                    className="mx-2"
-                    id={productId}
-                    onClick={handleDelete}
-                >
-                    X
-                </button>
-            </tr>
-        </tbody>
+            })}
+            <button
+                className="mx-2"
+                id={productId}
+                onClick={handleDelete}
+            >
+                X
+            </button>
+        </tr>
     )
 }

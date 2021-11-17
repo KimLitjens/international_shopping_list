@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import SearchBar from '../searchBar'
-import { ListItem } from '../../components'
-import { collection, getDocs, collectionGroup } from 'firebase/firestore';
+import { ListItem, ListForm } from '../../components'
+import { collection, doc, setDoc, getDocs, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase'
 
 
@@ -27,7 +27,7 @@ export default function List() {
             return shoppingList;
         }
         return shoppingList.filter((product) => {
-            const productNames = Object.values(product.productName);
+            const productNames = Object.values(product.productNames);
             return productNames.some(product => product.toLowerCase().includes(searchQuery));
         });
     };
@@ -44,9 +44,29 @@ export default function List() {
         setShoppingList(newShoppingList)
     }
 
+    const saveShoppingListInFS = () => {
+        shoppingList.forEach(async function (product) {
+            const id = '' + product.id
+            const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM", "listItems", id);
+            const docSnap = await getDoc(docRef);
+
+            if (!docSnap.exists()) {
+                try {
+                    setDoc(docRef, product);
+                } catch (e) {
+                    console.error("Error adding document: ", e);
+                }
+            }
+        })
+    }
+
     useEffect(() => {
         getProducts()
     }, [])
+
+    useEffect(() => {
+        saveShoppingListInFS()
+    }, [shoppingList])
 
     return (
         <div className="flex flex-col items-center bg-gray-200  p-4">
@@ -66,23 +86,23 @@ export default function List() {
                             <th></th>
                         </tr>
                     </thead>
-                    {filterdProducts.filter(product => !product.checked).map(product => {
-                        return <ListItem
-                            product={product}
-                            shoppingList={shoppingList}
-                            setShoppingList={setShoppingList}
-                        />
-                    })}
+                    <tbody>
+                        {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
+                            return <ListItem
+                                product={product}
+                                shoppingList={shoppingList}
+                                setShoppingList={setShoppingList}
+                            />
+                        })}
+                    </tbody>
                 </table> : null}
 
-            <form className="mt-4" onSubmit={handleSubmit(onSubmit)}>
-                <input className="mr-4" {...register("french")} placeholder="french" />
-                <input className="mr-4" {...register("german")} placeholder="german" />
-                <input className="mr-4" {...register("dutch")} placeholder="dutch" />
-                {errors.exampleRequired && <span>This field is required</span>}
-
-                <input className="bg-yellow-500 px-2 mx-2" type="submit" />
-            </form>
+            <ListForm
+                onSubmit={onSubmit}
+                handleSubmit={handleSubmit}
+                register={register}
+                errors={errors}
+            />
 
             {filterdProducts.some(element => element.checked) ?
                 <table className="table-auto">
@@ -95,13 +115,15 @@ export default function List() {
                             <th></th>
                         </tr>
                     </thead>
-                    {filterdProducts.filter(product => product.checked).map(product => {
-                        return <ListItem
-                            product={product}
-                            shoppingList={shoppingList}
-                            setShoppingList={setShoppingList}
-                        />
-                    })}
+                    <tbody>
+                        {filterdProducts.filter(product => product.checked && !product.deleted).map(product => {
+                            return <ListItem
+                                product={product}
+                                shoppingList={shoppingList}
+                                setShoppingList={setShoppingList}
+                            />
+                        })}
+                    </tbody>
                 </table> : null}
         </div>
     )
