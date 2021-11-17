@@ -1,6 +1,6 @@
 import React from 'react'
 import { getAuth, signOut } from "firebase/auth";
-import styles from './form.styles'
+import styles from './signOut.styles'
 
 export default function SignOutButton() {
     const auth = getAuth();

@@ -1,4 +1,7 @@
 const styles = {
+    welcome: [
+        `ml-4 flex self-center text-center`
+    ],
     div: [
         `flex justify-between`
     ],
