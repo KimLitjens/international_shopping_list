@@ -48,15 +48,13 @@ export default function List() {
         shoppingList.forEach(async function (product) {
             const id = '' + product.id
             const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM", "listItems", id);
-            const docSnap = await getDoc(docRef);
 
-            if (!docSnap.exists()) {
-                try {
-                    setDoc(docRef, product);
-                } catch (e) {
-                    console.error("Error adding document: ", e);
-                }
+            try {
+                setDoc(docRef, product);
+            } catch (e) {
+                console.error("Error adding document: ", e);
             }
+
         })
     }
 
