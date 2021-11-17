@@ -1,73 +1,31 @@
-import React, { useState } from 'react'
-import { useForm } from "react-hook-form"
+import React, { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import SearchBar from '../searchBar'
 import { ListItem } from '../../components'
+import { collection, getDocs, collectionGroup } from 'firebase/firestore';
+import { db } from '../../firebase'
+
 
 export default function List() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { search } = window.location;
     const query = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(query || '');
+    const [shoppingList, setShoppingList] = useState([])
 
-
-    const [shoppingList, setShoppingList] = useState([
-        {
-            productName: {
-                french: "la soup",
-                german: "die Suppet",
-                dutch: "soep",
-
-            },
-            checked: false,
-            id: 2351235233
-        },
-        {
-            productName: {
-                french: "le pignon de pin",
-                german: "der Pinienkern",
-                dutch: "pijnboompitten",
-
-            },
-            checked: false,
-            id: 456435734
-        },
-        {
-            productName: {
-                french: "le cornichon",
-                german: "die Essiggurke",
-                dutch: "augurk",
-
-            },
-            checked: false,
-            id: 235123
-        },
-        {
-            productName: {
-                french: "la pomme de terre",
-                german: "die Kartoffeln",
-                dutch: "aardappel",
-
-            },
-            checked: true,
-            id: 1636038161272
-        },
-        {
-            productName: {
-                french: "le haricots verts",
-                german: "die grüne Bohne",
-                dutch: "sperziebonen",
-
-            },
-            checked: false,
-            id: 1636038154864
-        },]
-    );
+    const getProducts = async () => {
+        const querySnapshot = await getDocs(collection(db, "lists", "4Ny1Rshg58TG1V6yl6ZM", "listItems"));
+        const newShoppingList = []
+        querySnapshot.forEach((doc) => {
+            newShoppingList.push(doc.data())
+        });
+        setShoppingList(newShoppingList)
+    }
 
     const filterProducts = (shoppingList, searchQuery) => {
         if (!searchQuery) {
             return shoppingList;
         }
-
         return shoppingList.filter((product) => {
             const productNames = Object.values(product.productName);
             return productNames.some(product => product.toLowerCase().includes(searchQuery));
@@ -78,13 +36,17 @@ export default function List() {
 
     const onSubmit = product => {
         const newListItem = {
-            productName: product,
+            productNames: product,
             checked: false,
             id: Date.now()
         }
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
     }
+
+    useEffect(() => {
+        getProducts()
+    }, [])
 
     return (
         <div className="flex flex-col items-center bg-gray-200  p-4">

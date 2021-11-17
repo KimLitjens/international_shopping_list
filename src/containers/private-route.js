@@ -15,7 +15,6 @@ export default function PrivateRoute({ children, ...rest }) {
     if (!auth.currentUser) {
         return null;
     }
-    console.log(auth.currentUser)
     return (
         Object.keys(auth.currentUser).length ? children : <Navigate to={ROUTES.LOG_IN} />
     )

@@ -7,7 +7,7 @@ export default function ListItem({
     setShoppingList }) {
 
     const [editing, setEditing] = useState(false)
-    const productName = product.productName
+    const productNames = product.productNames
     const productId = product.id
 
 
@@ -29,7 +29,7 @@ export default function ListItem({
 
     const handleOnChange = (language, id, value,) => {
         const newShoppingList = [...shoppingList]
-        newShoppingList.find(item => item.id == id).productName[language] = value
+        newShoppingList.find(item => item.id == id).productNames[language] = value
         setShoppingList(newShoppingList)
     }
 
@@ -53,17 +53,17 @@ export default function ListItem({
                         />
                     </label>
                 </td>
-                {Object.entries(productName).map(([language, productName]) => {
+                {Object.entries(productNames).map(([language, productNames]) => {
                     return <td className="px-2">
                         <p className={styles.p({ editing })}
                             onDoubleClick={handleEditing}
                         >
-                            {productName}
+                            {productNames}
                         </p>
                         <input
                             type="text"
                             className={!editing ? "hidden" : null}
-                            value={productName}
+                            value={productNames}
                             onChange={e => {
                                 handleOnChange(language, e.target.id, e.target.value)
                             }}

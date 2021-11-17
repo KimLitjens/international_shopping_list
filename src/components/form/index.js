@@ -30,7 +30,7 @@ export default function Form({ type }) {
                         emailAddress: data.email.toLowerCase(),
                         dateCreated: Date.now()
                     })
-                    console.log(data)
+
 
                 })
                 .catch((error) => {
