@@ -12,6 +12,7 @@ export default function List() {
     const query = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(query || '');
     const [shoppingList, setShoppingList] = useState([])
+    const languageOrder = ["French", "German", "Dutch"]
 
     const getProducts = async () => {
         const querySnapshot = await getDocs(collection(db, "lists", "4Ny1Rshg58TG1V6yl6ZM", "listItems"));
@@ -78,18 +79,20 @@ export default function List() {
                     <thead>
                         <tr>
                             <th></th>
-                            <th>French</th>
-                            <th>German</th>
-                            <th>Dutch</th>
+                            {languageOrder.map(language => {
+                                return <th>{language}</th>
+                            })}
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
+                            console.log(filterdProducts)
                             return <ListItem
                                 product={product}
                                 shoppingList={shoppingList}
                                 setShoppingList={setShoppingList}
+                                languageOrder={languageOrder}
                             />
                         })}
                     </tbody>
@@ -102,14 +105,14 @@ export default function List() {
                 errors={errors}
             />
 
-            {filterdProducts.some(element => element.checked) ?
+            {filterdProducts.some(product => product.checked && !product.deleted) ?
                 <table className="table-auto">
                     <thead>
                         <tr>
                             <th></th>
-                            <th>French</th>
-                            <th>German</th>
-                            <th>Dutch</th>
+                            {languageOrder.map(language => {
+                                return <th>{language}</th>
+                            })}
                             <th></th>
                         </tr>
                     </thead>
@@ -119,6 +122,7 @@ export default function List() {
                                 product={product}
                                 shoppingList={shoppingList}
                                 setShoppingList={setShoppingList}
+                                languageOrder={languageOrder}
                             />
                         })}
                     </tbody>

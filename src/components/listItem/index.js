@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import styles from './listItem.styles'
 
 export default function ListItem({
+    languageOrder,
     product,
     shoppingList,
     setShoppingList }) {
@@ -52,17 +53,18 @@ export default function ListItem({
                     />
                 </label>
             </td>
-            {Object.entries(productNames).map(([language, productNames]) => {
-                return <td className="px-2">
+
+            {languageOrder.map(choosenLanguage => Object.entries(productNames).map(([language, productName]) => {
+                return choosenLanguage == language ? <td className="px-2">
                     <p className={styles.p({ editing })}
                         onDoubleClick={handleEditing}
                     >
-                        {productNames}
+                        {productName}
                     </p>
                     <input
                         type="text"
                         className={!editing ? "hidden" : null}
-                        value={productNames}
+                        value={productName}
                         onChange={e => {
                             handleOnChange(language, e.target.id, e.target.value)
                         }}
@@ -70,7 +72,8 @@ export default function ListItem({
                         onKeyDown={handleUpdatedDone}
                     />
                 </td>
-            })}
+                    : null
+            }))}
             <button
                 className="mx-2"
                 id={productId}
