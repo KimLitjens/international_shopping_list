@@ -39,9 +39,8 @@ export default function ListItem({
         await productList.map(product => product.id == item.target.id ? product.checked = !product.checked : null)
         setShoppingList(productList)
     }
-
     return (
-        <tr className={product.checked ? "line-through" : null} key="something" >
+        <tr className={product.checked ? "line-through" : null} >
             <td className="px-2">
                 <label >
                     <input

@@ -2,25 +2,34 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import SearchBar from '../searchBar'
 import { ListItem, ListForm } from '../../components'
-import { collection, doc, setDoc, getDocs, getDoc } from 'firebase/firestore';
+import { collection, doc, setDoc, getDocs, getDoc, query, where } from 'firebase/firestore';
 import { db } from '../../firebase'
+
+import { useAuth } from '../../utils/hooks/useAuth'
+
 
 
 export default function List() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { search } = window.location;
-    const query = new URLSearchParams(search).get('s');
-    const [searchQuery, setSearchQuery] = useState(query || '');
+    const querys = new URLSearchParams(search).get('s');
+    const [searchQuery, setSearchQuery] = useState(querys || '');
+    const [noListFound, setNoListFound] = useState(false)
     const [shoppingList, setShoppingList] = useState([])
     const languageOrder = ["French", "German", "Dutch"]
+    const userInfo = useAuth();
+    const [auth, setAuth] = useState({});
+    const userUID = auth?.currentUser?.uid
+
 
     const getProducts = async () => {
-        const querySnapshot = await getDocs(collection(db, "lists", "4Ny1Rshg58TG1V6yl6ZM", "listItems"));
         const newShoppingList = []
+        const querySnapshot = await getDocs(collection(db, "lists"));
         querySnapshot.forEach((doc) => {
-            newShoppingList.push(doc.data())
+            doc.data().adminId == userUID && doc.data().listItems.map(item => newShoppingList.push(item))
         });
         setShoppingList(newShoppingList)
+        setNoListFound(!newShoppingList.length ? true : false)
     }
 
     const filterProducts = (shoppingList, searchQuery) => {
@@ -60,8 +69,12 @@ export default function List() {
     }
 
     useEffect(() => {
+        setAuth(userInfo)
+    }, [userInfo]);
+
+    useEffect(() => {
         getProducts()
-    }, [])
+    }, [userUID])
 
     useEffect(() => {
         saveShoppingListInFS()
@@ -87,7 +100,6 @@ export default function List() {
                     </thead>
                     <tbody>
                         {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
-                            console.log(filterdProducts)
                             return <ListItem
                                 product={product}
                                 shoppingList={shoppingList}
@@ -97,6 +109,8 @@ export default function List() {
                         })}
                     </tbody>
                 </table> : null}
+
+            {noListFound && <h2>No List Found</h2>}
 
             <ListForm
                 onSubmit={onSubmit}
