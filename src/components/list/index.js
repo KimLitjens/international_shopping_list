@@ -11,6 +11,7 @@ export default function List() {
     const { register,
         handleSubmit,
         reset,
+        setFocus,
         formState: { errors } } = useForm({
             defaultValues: {
                 French: '',
@@ -59,6 +60,7 @@ export default function List() {
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
         reset()
+        setFocus("French")
 
     }
 
