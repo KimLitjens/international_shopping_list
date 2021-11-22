@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import SearchBar from '../searchBar'
 import { ListItem, ListForm } from '../../components'
-import { collection, doc, setDoc, getDocs, getDoc, query, where } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc, arrayUnion, deleteField } from 'firebase/firestore';
 import { db } from '../../firebase'
 
 import { useAuth } from '../../utils/hooks/useAuth'
@@ -21,12 +21,11 @@ export default function List() {
     const [auth, setAuth] = useState({});
     const userUID = auth?.currentUser?.uid
 
-
     const getProducts = async () => {
         const newShoppingList = []
         const querySnapshot = await getDocs(collection(db, "lists"));
         querySnapshot.forEach((doc) => {
-            doc.data().adminId == userUID && doc.data().listItems.map(item => newShoppingList.push(item))
+            doc.data().adminId == userUID && doc.data().listItems?.map(item => newShoppingList.push(item))
         });
         setShoppingList(newShoppingList)
         setNoListFound(!newShoppingList.length ? true : false)
@@ -57,13 +56,15 @@ export default function List() {
     const saveShoppingListInFS = () => {
         shoppingList.forEach(async function (product) {
             const id = '' + product.id
-            const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM", "listItems", id);
+            const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
 
-            try {
-                setDoc(docRef, product);
-            } catch (e) {
-                console.error("Error adding document: ", e);
-            }
+            await updateDoc(docRef, {
+                listItems: deleteField()
+            });
+
+            await updateDoc(docRef, {
+                listItems: arrayUnion(product)
+            });
 
         })
     }

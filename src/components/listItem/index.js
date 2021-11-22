@@ -14,7 +14,7 @@ export default function ListItem({
 
     const handleDelete = async item => {
         const productList = [...shoppingList]
-        await productList.map(product => product.id == item.target.id ? product.deleted = !product.deleted : null)
+        await productList.map(product => product.id == item.target.id ? product.deleted = true : null)
         setShoppingList(productList)
     }
 
