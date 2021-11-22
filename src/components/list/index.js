@@ -7,10 +7,17 @@ import { db } from '../../firebase'
 
 import { useAuth } from '../../utils/hooks/useAuth'
 
-
-
 export default function List() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register,
+        handleSubmit,
+        reset,
+        formState: { errors } } = useForm({
+            defaultValues: {
+                French: '',
+                German: '',
+                Dutch: ''
+            }
+        });
     const { search } = window.location;
     const querys = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(querys || '');
@@ -51,6 +58,8 @@ export default function List() {
         }
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
+        reset()
+
     }
 
     const saveShoppingListInFS = () => {
