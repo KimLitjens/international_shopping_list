@@ -32,8 +32,10 @@ export default function List() {
     const getProducts = async () => {
         const newShoppingList = []
         const querySnapshot = await getDocs(collection(db, "lists"));
+
         querySnapshot.forEach((doc) => {
-            doc.data().adminId == userUID && doc.data().listItems?.map(item => newShoppingList.push(item))
+            doc.data().adminId == userUID || doc.data()?.users?.includes(userUID) &&
+                doc.data().listItems?.map(item => newShoppingList.push(item))
         });
         setShoppingList(newShoppingList)
         setNoListFound(!newShoppingList.length ? true : false)
@@ -66,7 +68,6 @@ export default function List() {
 
     const saveShoppingListInFS = () => {
         shoppingList.forEach(async function (product) {
-            const id = '' + product.id
             const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
 
             await updateDoc(docRef, {
