@@ -35,6 +35,12 @@ export default function ListItem({
         setShoppingList(newShoppingList)
     }
 
+    const handleQuantityOnChange = (id, value,) => {
+        const newShoppingList = [...shoppingList]
+        newShoppingList.find(item => item.id == id).quantity = value
+        setShoppingList(newShoppingList)
+    }
+
     const handleChange = async item => {
         const productList = [...shoppingList]
         await productList.map(product => product.id == item.target.id ? product.checked = !product.checked : null)
@@ -53,6 +59,21 @@ export default function ListItem({
                     />
                 </label>
             </td>
+            <td className={styles.td}>
+                <p className={styles.p({ editing })}
+                    onDoubleClick={handleEditing}>
+                    {product.quantity}
+                </p>
+                <input
+                    type="text"
+                    className={styles.inputEditing({ editing })}
+                    value={product.quantity}
+                    onChange={e => {
+                        handleQuantityOnChange(e.target.id, e.target.value)
+                    }}
+                    id={productId}
+                    onKeyDown={handleUpdatedDone}
+                /></td>
 
             {languageOrder.map(choosenLanguage => Object.entries(productNames).map(([language, productName]) => {
                 return choosenLanguage == language ? <td className={styles.td}>

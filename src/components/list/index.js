@@ -60,7 +60,8 @@ export default function List() {
         const newListItem = {
             productNames: product,
             checked: false,
-            id: Date.now()
+            id: Date.now(),
+            quantity: '1'
         }
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
@@ -108,6 +109,7 @@ export default function List() {
                     <thead>
                         <tr>
                             <th></th>
+                            <th>Qty</th>
                             {languageOrder.map(language => {
                                 return <th>{language}</th>
                             })}
