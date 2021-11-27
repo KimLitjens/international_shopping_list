@@ -10,6 +10,7 @@ export default function ListItem({
     const [editing, setEditing] = useState(false)
     const productNames = product.productNames
     const productId = product.id
+    const checked = product.checked
 
 
     const handleDelete = async item => {
@@ -40,11 +41,11 @@ export default function ListItem({
         setShoppingList(productList)
     }
     return (
-        <tr className={product.checked ? "line-through" : null} >
-            <td className="px-2">
+        <tr className={styles.tr({ checked })} >
+            <td className={styles.td}>
                 <label >
                     <input
-                        className="mx-2"
+                        className={styles.input}
                         type="checkbox"
                         id={productId}
                         onChange={handleChange}
@@ -54,7 +55,7 @@ export default function ListItem({
             </td>
 
             {languageOrder.map(choosenLanguage => Object.entries(productNames).map(([language, productName]) => {
-                return choosenLanguage == language ? <td className="px-2">
+                return choosenLanguage == language ? <td className={styles.td}>
                     <p className={styles.p({ editing })}
                         onDoubleClick={handleEditing}
                     >
@@ -62,7 +63,7 @@ export default function ListItem({
                     </p>
                     <input
                         type="text"
-                        className={!editing ? "hidden" : null}
+                        className={styles.inputEditing({ editing })}
                         value={productName}
                         onChange={e => {
                             handleOnChange(language, e.target.id, e.target.value)
@@ -74,7 +75,7 @@ export default function ListItem({
                     : null
             }))}
             <button
-                className="mx-2"
+                className={styles.button}
                 id={productId}
                 onClick={handleDelete}
             >

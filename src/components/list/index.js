@@ -4,6 +4,8 @@ import SearchBar from '../searchBar'
 import { ListItem, ListForm } from '../../components'
 import { collection, doc, getDocs, updateDoc, arrayUnion, deleteField } from 'firebase/firestore';
 import { db } from '../../firebase'
+import styles from './list.styles'
+
 
 import { useAuth } from '../../utils/hooks/useAuth'
 
@@ -94,14 +96,14 @@ export default function List() {
     }, [shoppingList])
 
     return (
-        <div className="flex flex-col items-center bg-gray-200  p-4">
+        <div className={styles.div}>
             <SearchBar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
             />
-            <p className="my-2">Shopping List: </p>
+            <h2 className={styles.h2}>Shopping List: </h2>
             {filterdProducts.some(element => !element.checked) ?
-                <table className="table-auto">
+                <table className={styles.table}>
                     <thead>
                         <tr>
                             <th></th>
@@ -133,7 +135,7 @@ export default function List() {
             />
 
             {filterdProducts.some(product => product.checked && !product.deleted) ?
-                <table className="table-auto">
+                <table className={styles.table}>
                     <thead>
                         <tr>
                             <th></th>

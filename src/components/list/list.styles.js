@@ -1,9 +1,12 @@
 const styles = {
-    li: [
-        `mx-4 py-4 bg-green-500`,
-    ].join(' '),
-    p: ({ editing }) => [
-        editing ? `hidden` : null
+    div: [
+        `flex flex-col items-center bg-gray-200  p-4`,
+    ],
+    h2: [
+        `my-2`
+    ],
+    table: [
+        `table-auto`
     ]
 }
 
