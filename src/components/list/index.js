@@ -36,8 +36,9 @@ export default function List() {
         const querySnapshot = await getDocs(collection(db, "lists"));
 
         querySnapshot.forEach((doc) => {
-            doc.data().adminId == userUID || doc.data()?.users?.includes(userUID) &&
+            if (doc.data().adminId == userUID || doc.data()?.users?.includes(userUID)) {
                 doc.data().listItems?.map(item => newShoppingList.push(item))
+            }
         });
         setShoppingList(newShoppingList)
         setNoListFound(!newShoppingList.length ? true : false)
