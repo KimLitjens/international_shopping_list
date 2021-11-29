@@ -1,6 +1,6 @@
 const styles = {
     tr: ({ checked }) => [
-        checked ? "line-through" : null
+        `w-full ${checked ? "line-through" : null}`
     ],
     td: [
         `px-2`
@@ -11,8 +11,11 @@ const styles = {
     p: ({ editing }) => [
         editing ? `hidden` : null
     ],
-    inputEditing: ({ editing }) => [
-        !editing ? `hidden` : null
+    quantityEditing: ({ editing }) => [
+        `w-16 ${!editing ? 'hidden' : null}`
+    ],
+    languageEditing: ({ editing }) => [
+        `md:flex-row ${!editing ? 'hidden' : null}`
     ],
     button: [
         `mx-2`

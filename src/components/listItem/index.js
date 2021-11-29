@@ -66,7 +66,7 @@ export default function ListItem({
                 </p>
                 <input
                     type="text"
-                    className={styles.inputEditing({ editing })}
+                    className={styles.quantityEditing({ editing })}
                     value={product.quantity}
                     onChange={e => {
                         handleQuantityOnChange(e.target.id, e.target.value)
@@ -84,7 +84,7 @@ export default function ListItem({
                     </p>
                     <input
                         type="text"
-                        className={styles.inputEditing({ editing })}
+                        className={styles.languageEditing({ editing })}
                         value={productName}
                         onChange={e => {
                             handleOnChange(language, e.target.id, e.target.value)
