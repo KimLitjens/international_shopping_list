@@ -15,7 +15,7 @@ const styles = {
         `mt-4 flex flex-col`,
     ],
     Input: [
-        `block border border-grey-light w-full p-3 rounded mb-4`,
+        `block border border-grey-light p-3 rounded mb-4`,
     ],
     Error: [
         `text-red-500 my-1`,

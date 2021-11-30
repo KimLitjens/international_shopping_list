@@ -9,7 +9,7 @@ const styles = {
         `mx-2`
     ],
     p: ({ editing }) => [
-        editing ? `hidden` : null
+        `text-center ${editing ? `hidden` : null}`
     ],
     quantityEditing: ({ editing }) => [
         `w-16 ${!editing ? 'hidden' : null}`

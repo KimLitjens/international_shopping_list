@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from './header.styles'
-import { SignOutButton } from '../../components'
+import { SignOutButton } from '..'
 import { useAuth } from '../../utils/hooks/useAuth'
 
 export default function Header() {

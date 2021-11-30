@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import SearchBar from '../searchBar'
-import { ListItem, ListForm } from '../../components'
+import SearchBar from '../searchBar/searchBar'
+import { ListItem, ListForm } from '..'
 import { collection, doc, getDocs, updateDoc, arrayUnion, deleteField } from 'firebase/firestore';
 import { db } from '../../firebase'
 import styles from './list.styles'
@@ -142,6 +143,7 @@ export default function List() {
                     <thead>
                         <tr>
                             <th></th>
+                            <th>Qty</th>
                             {languageOrder.map(language => {
                                 return <th>{language}</th>
                             })}
