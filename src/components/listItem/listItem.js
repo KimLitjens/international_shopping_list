@@ -46,9 +46,11 @@ export default function ListItem({
         await productList.map(product => product.id == item.target.id ? product.checked = !product.checked : null)
         setShoppingList(productList)
     }
+
+
     return (
-        <tr className={styles.tr({ checked })} >
-            <td className={styles.td}>
+        <>
+            <div className={styles.div({ checked, editing })} >
                 <label >
                     <input
                         className={styles.input}
@@ -58,50 +60,65 @@ export default function ListItem({
                         checked={product.checked ? true : false}
                     />
                 </label>
-            </td>
-            <td className={styles.td}>
                 <p className={styles.p({ editing })}
                     onDoubleClick={handleEditing}>
                     {product.quantity}
                 </p>
+                {languageOrder.map(choosenLanguage =>
+                    Object.entries(productNames).map(([language, productName]) => {
+                        return choosenLanguage == language ?
+                            <div className={styles.language}>
+                                <p className={styles.p({ editing })}
+                                    onDoubleClick={handleEditing}
+                                >
+                                    {productName}
+                                </p>
+                            </div>
+                            : null
+                    }))}
+                <button
+                    className={styles.button}
+                    id={productId}
+                    onClick={handleDelete}
+                >
+                    X
+                </button>
+            </div>
+            <div className={styles.inputDiv({ checked, editing })}>
+                <div></div>
+                <label for={productId} className={styles.quantityLabel}><h3>Quantity: </h3></label>
                 <input
                     type="text"
-                    className={styles.quantityEditing({ editing })}
+                    className={styles.quantityEditing}
                     value={product.quantity}
                     onChange={e => {
                         handleQuantityOnChange(e.target.id, e.target.value)
                     }}
                     id={productId}
                     onKeyDown={handleUpdatedDone}
-                /></td>
+                />
 
-            {languageOrder.map(choosenLanguage => Object.entries(productNames).map(([language, productName]) => {
-                return choosenLanguage == language ? <td className={styles.td}>
-                    <p className={styles.p({ editing })}
-                        onDoubleClick={handleEditing}
-                    >
-                        {productName}
-                    </p>
-                    <input
-                        type="text"
-                        className={styles.languageEditing({ editing })}
-                        value={productName}
-                        onChange={e => {
-                            handleOnChange(language, e.target.id, e.target.value)
-                        }}
-                        id={productId}
-                        onKeyDown={handleUpdatedDone}
-                    />
-                </td>
-                    : null
-            }))}
-            <button
-                className={styles.button}
-                id={productId}
-                onClick={handleDelete}
-            >
-                X
-            </button>
-        </tr>
+                {languageOrder.map(choosenLanguage =>
+                    Object.entries(productNames).map(([language, productName]) => {
+                        return choosenLanguage == language ? <>
+                            <label className={styles.languageLabel}>
+                                <h3>{language}: </h3>
+                            </label>
+                            <input
+                                type="text"
+                                value={productName}
+                                className={styles.languageEditing}
+                                onChange={e => {
+                                    handleOnChange(language, e.target.id, e.target.value)
+                                }}
+                                id={productId}
+                                onKeyDown={handleUpdatedDone}
+                            />
+                        </>
+                            : null
+                    }))}
+                <div></div>
+            </div>
+        </>
     )
 }

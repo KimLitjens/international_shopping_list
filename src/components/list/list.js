@@ -105,29 +105,23 @@ export default function List() {
                 setSearchQuery={setSearchQuery}
             />
             <h2 className={styles.h2}>Shopping List: </h2>
-            {filterdProducts.some(element => !element.checked) ?
-                <table className={styles.table}>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Qty</th>
-                            {languageOrder.map(language => {
-                                return <th>{language}</th>
-                            })}
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
-                            return <ListItem
-                                product={product}
-                                shoppingList={shoppingList}
-                                setShoppingList={setShoppingList}
-                                languageOrder={languageOrder}
-                            />
-                        })}
-                    </tbody>
-                </table> : null}
+            <div className="w-10/12 grid grid-cols-12 gap-4">
+                <div></div>
+                <div className="text-center"><h3>Qty</h3></div>
+                {languageOrder.map(language => {
+                    return <div className="col-span-3 text-center"><h3>{language}</h3></div>
+                })}
+                <div></div>
+            </div>
+
+            {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
+                return <ListItem
+                    product={product}
+                    shoppingList={shoppingList}
+                    setShoppingList={setShoppingList}
+                    languageOrder={languageOrder}
+                />
+            })}
 
             {noListFound && <h2>No List Found</h2>}
 
@@ -138,29 +132,23 @@ export default function List() {
                 errors={errors}
             />
 
-            {filterdProducts.some(product => product.checked && !product.deleted) ?
-                <table className={styles.table}>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Qty</th>
-                            {languageOrder.map(language => {
-                                return <th>{language}</th>
-                            })}
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filterdProducts.filter(product => product.checked && !product.deleted).map(product => {
-                            return <ListItem
-                                product={product}
-                                shoppingList={shoppingList}
-                                setShoppingList={setShoppingList}
-                                languageOrder={languageOrder}
-                            />
-                        })}
-                    </tbody>
-                </table> : null}
+            <div className="w-10/12 grid grid-cols-12 gap-4">
+                <div></div>
+                <div className="text-center"><h3>Qty</h3></div>
+                {languageOrder.map(language => {
+                    return <div className="col-span-3 text-center"><h3>{language}</h3></div>
+                })}
+                <div></div>
+            </div>
+
+            {filterdProducts.filter(product => product.checked && !product.deleted).map(product => {
+                return <ListItem
+                    product={product}
+                    shoppingList={shoppingList}
+                    setShoppingList={setShoppingList}
+                    languageOrder={languageOrder}
+                />
+            })}
         </div>
     )
 }
