@@ -1,6 +1,9 @@
 const styles = {
     div: ({ checked, editing }) => [
-        `w-10/12 grid grid-cols-12 gap-4 ${checked ? "line-through" : null} ${editing ? `hidden` : null}`
+        `w-10/12 grid grid-cols-12 gap-4 
+        ${checked ? "line-through" : null} 
+        ${editing ? `hidden` : null}
+        group`
     ],
     language: [
         `col-span-3`
@@ -48,7 +51,9 @@ const styles = {
          `
     ],
     button: [
-        `mx-2 `
+        `mx-2 
+        invisible
+        group-hover:visible`
     ]
 }
 
