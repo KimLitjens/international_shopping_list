@@ -50,7 +50,7 @@ export default function ListItem({
 
     return (
         <>
-            <div className={styles.div({ checked, editing })} >
+            <div className={styles.div({ editing })} >
                 <label >
                     <input
                         className={styles.input}
@@ -68,7 +68,7 @@ export default function ListItem({
                     Object.entries(productNames).map(([language, productName]) => {
                         return choosenLanguage == language ?
                             <div className={styles.language}>
-                                <p className={styles.p({ editing })}
+                                <p className={styles.p({ checked, editing })}
                                     onDoubleClick={handleEditing}
                                 >
                                     {productName}

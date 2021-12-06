@@ -1,7 +1,6 @@
 const styles = {
-    div: ({ checked, editing }) => [
+    div: ({ editing }) => [
         `w-10/12 grid grid-cols-12 gap-4 
-        ${checked ? "line-through" : null} 
         ${editing ? `hidden` : null}
         group`
     ],
@@ -11,8 +10,11 @@ const styles = {
     input: [
         `mx-2`
     ],
-    p: ({ editing }) => [
-        `text-center ${editing ? `hidden` : null}`
+    p: ({ checked, editing }) => [
+        `text-center 
+        ${editing ? `hidden` : null}
+        ${checked ? "line-through" : null} 
+        `
     ],
     inputDiv: ({ editing }) => [
         `w-10/12 flex flex-col items-center ${!editing ? `hidden` : null} 
@@ -32,7 +34,7 @@ const styles = {
         `
     ],
     quantityLabel: [
-        `md:hidden`
+        `md:hidden `
     ],
     languageEditing: [
         `col-span-3
