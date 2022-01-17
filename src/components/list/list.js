@@ -107,11 +107,11 @@ export default function List() {
             <h2 className={styles.h2}>Shopping List: </h2>
             <div className="w-10/12 grid grid-cols-12 gap-4">
                 <div></div>
-                <div className="text-center">
+                <div className="text-center underline">
                     <h3>Qty</h3>
                 </div>
                 {languageOrder.map(language => {
-                    return <div className="col-span-3 text-center"><h3>{language}</h3></div>
+                    return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
                 })}
                 <div></div>
             </div>
@@ -136,11 +136,11 @@ export default function List() {
 
             <div className="w-10/12 grid grid-cols-12 gap-4">
                 <div></div>
-                <div className="text-center">
+                <div className="text-center underline">
                     <h3>Qty</h3>
                 </div>
                 {languageOrder.map(language => {
-                    return <div className="col-span-3 text-center"><h3>{language}</h3></div>
+                    return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
                 })}
                 <div></div>
             </div>

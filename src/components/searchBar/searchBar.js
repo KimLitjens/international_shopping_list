@@ -13,7 +13,6 @@ const SearchBar = ({ searchQuery, setSearchQuery }) => (
             placeholder="Search Shopping List"
             name="s"
         />
-        <button className={styles.button} type="submit">Search</button>
     </form>
 );
 
