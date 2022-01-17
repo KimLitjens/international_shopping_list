@@ -12,7 +12,7 @@ export default function ListItem({
     const productId = product.id
     const checked = product.checked
 
-
+    // Clicking the delete button
     const handleDelete = async item => {
         const productList = [...shoppingList]
         await productList.map(product => product.id == item.target.id ? product.deleted = true : null)
@@ -28,13 +28,13 @@ export default function ListItem({
     const handleEditing = () => {
         setEditing(true)
     }
-
+    // changing item
     const handleOnChange = (language, id, value,) => {
         const newShoppingList = [...shoppingList]
         newShoppingList.find(item => item.id == id).productNames[language] = value
         setShoppingList(newShoppingList)
     }
-
+    // changing quantity from item
     const handleQuantityOnChange = (id, value,) => {
         const newShoppingList = [...shoppingList]
         newShoppingList.find(item => item.id == id).quantity = value
