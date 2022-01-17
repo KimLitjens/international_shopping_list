@@ -38,9 +38,9 @@ export default function Homepage() {
     return (
         <>
             <Header />
-            <h2>Your lists:</h2>
-            {!!lists && lists.map(list => <p key={list}>{list}</p>)}
-            {/* <List /> */}
+            {/* <h2>Your lists:</h2> */}
+            {/* {!!lists && lists.map(list => <p key={list}>{list}</p>)} */}
+            <List />
         </>
     )
 }
