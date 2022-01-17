@@ -32,6 +32,7 @@ export default function List() {
     const [auth, setAuth] = useState({});
     const userUID = auth?.currentUser?.uid
 
+    // Get al products from FireStore
     const getProducts = async () => {
         const newShoppingList = []
         const querySnapshot = await getDocs(collection(db, "lists"));
@@ -45,6 +46,7 @@ export default function List() {
         setNoListFound(!newShoppingList.length ? true : false)
     }
 
+    // Filter the list by product name
     const filterProducts = (shoppingList, searchQuery) => {
         if (!searchQuery) {
             return shoppingList;
@@ -70,7 +72,7 @@ export default function List() {
         setFocus("French")
 
     }
-
+    // Update shopping list in Firestore after change
     const saveShoppingListInFS = () => {
         shoppingList.forEach(async function (product) {
             const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
@@ -100,11 +102,14 @@ export default function List() {
 
     return (
         <div className={styles.div}>
+            {/* List Filter */}
             <SearchBar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
             />
+            {/* Title */}
             <h2 className={styles.h2}>Shopping List: </h2>
+            {/* Column Titles */}
             <div className="w-10/12 grid grid-cols-12 gap-4">
                 <div></div>
                 <div className="text-center underline">
@@ -124,15 +129,16 @@ export default function List() {
                     languageOrder={languageOrder}
                 />
             })}
-
+            {/* Message when no list is found */}
             {noListFound && <h2>No List Found</h2>}
-
+            {/* Submit item to List */}
             <ListForm
                 onSubmit={onSubmit}
                 handleSubmit={handleSubmit}
                 register={register}
                 errors={errors}
             />
+            {/* Column Titles from checked list */}
 
             <div className="w-10/12 grid grid-cols-12 gap-4">
                 <div></div>

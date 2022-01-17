@@ -13,6 +13,8 @@ export default function Homepage() {
     const userUID = auth?.currentUser?.uid
     const [lists, setLists] = useState([])
 
+
+    // get list from FireStore
     const getLists = async () => {
         const docRef = doc(db, "users", userUID);
         const docSnap = await getDoc(docRef);
