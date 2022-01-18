@@ -72,6 +72,12 @@ export default function List() {
         setFocus("French")
 
     }
+
+    // clear input field
+    const clearInputField = () => {
+        setSearchQuery("")
+    }
+
     // Update shopping list in Firestore after change
     const saveShoppingListInFS = () => {
         shoppingList.forEach(async function (product) {
@@ -106,6 +112,7 @@ export default function List() {
             <SearchBar
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
+                clearInputField={clearInputField}
             />
             {/* Title */}
             <h2 className={styles.h2}>Shopping List: </h2>
