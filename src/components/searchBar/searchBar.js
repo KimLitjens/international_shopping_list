@@ -1,6 +1,6 @@
 import styles from './seachBar.styles'
 
-const SearchBar = ({ searchQuery, setSearchQuery }) => (
+const SearchBar = ({ clearInputField, searchQuery, setSearchQuery }) => (
     <form className="justify-self-center" action="/" method="get">
         <label htmlFor="header-search">
 
@@ -13,7 +13,7 @@ const SearchBar = ({ searchQuery, setSearchQuery }) => (
             placeholder="Search Shopping List"
             name="s"
         />
-        <button className={styles.button} type="submit">Search</button>
+        <button className={styles.button} type="button" onClick={clearInputField}>Clear</button>
     </form>
 );
 

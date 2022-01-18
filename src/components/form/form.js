@@ -13,6 +13,7 @@ export default function Form({ type }) {
     const navigate = useNavigate();
     const auth = getAuth()
 
+    // What shows up depending on login or signup
     const formDetails = {
         signUp: async (data) => {
             await createUserWithEmailAndPassword(auth, data.email, data.password)
@@ -64,9 +65,11 @@ export default function Form({ type }) {
         <div className={styles.Page}>
             <div className={styles.Container}>
                 <div className={styles.InsideContainer}>
+                    {/* Header */}
                     <h1 className={styles.Title}>
                         {type === "logIn" ? "Log in" : "Sign up"}
                     </h1>
+                    {/* Form */}
                     <form
                         className={styles.Form}
                         onSubmit={handleSubmit(onSubmit)}
@@ -122,6 +125,7 @@ export default function Form({ type }) {
                             type="submit"
                         />
                     </form>
+                    {/* Link to Log-in or Sign-up */}
                     <div className={styles.Footer}>
                         {type === "logIn" ? "Don't have an account?" : "Already have an account?"}
                         <Link
