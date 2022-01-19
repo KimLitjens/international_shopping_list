@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import SearchBar from '../searchBar/searchBar'
 import { ListItem, ListForm } from '..'
-import { collection, doc, getDocs, updateDoc, arrayUnion, deleteField } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase'
 import styles from './list.styles'
 
@@ -64,7 +64,8 @@ export default function List() {
             productNames: product,
             checked: false,
             id: Date.now(),
-            quantity: '1'
+            quantity: '1',
+            status: 'new'
         }
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
@@ -79,19 +80,12 @@ export default function List() {
     }
 
     // Update shopping list in Firestore after change
-    const saveShoppingListInFS = () => {
-        shoppingList.forEach(async function (product) {
-            const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
+    const saveShoppingListInFS = async () => {
+        const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
 
-            await updateDoc(docRef, {
-                listItems: deleteField()
-            });
-
-            await updateDoc(docRef, {
-                listItems: arrayUnion(product)
-            });
-
-        })
+        await updateDoc(docRef, {
+            listItems: shoppingList
+        });
     }
 
     useEffect(() => {
