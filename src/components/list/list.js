@@ -27,6 +27,7 @@ export default function List() {
     const [searchQuery, setSearchQuery] = useState(querys || '');
     const [noListFound, setNoListFound] = useState(false)
     const [shoppingList, setShoppingList] = useState([])
+    const [shoppingListFetched, setshoppingListFetched] = useState(false)
     const languageOrder = ["French", "German", "Dutch"]
     const userInfo = useAuth();
     const [auth, setAuth] = useState({});
@@ -38,12 +39,13 @@ export default function List() {
         const querySnapshot = await getDocs(collection(db, "lists"));
 
         querySnapshot.forEach((doc) => {
-            if (doc.data().adminId == userUID || doc.data()?.users?.includes(userUID)) {
+            if (doc.data().adminId == "backup" || doc.data()?.users?.includes(userUID)) {
                 doc.data().listItems?.map(item => newShoppingList.push(item))
             }
         });
         setShoppingList(newShoppingList)
         setNoListFound(!newShoppingList.length ? true : false)
+        setshoppingListFetched(true)
     }
 
     // Filter the list by product name
@@ -97,7 +99,7 @@ export default function List() {
     }, [userUID])
 
     useEffect(() => {
-        saveShoppingListInFS()
+        shoppingListFetched && saveShoppingListInFS()
     }, [shoppingList])
 
     return (

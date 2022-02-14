@@ -21,7 +21,6 @@ export default function Homepage() {
 
         if (docSnap.exists()) {
             const fetchedLists = []
-            console.log("Document data:", docSnap.data().lists);
             await docSnap.data().lists.map(list => fetchedLists.push(list));
             setLists(fetchedLists)
         } else {
