@@ -33,8 +33,8 @@ const useProvideAuth = () => {
 };
 
 export const ProvideAuth = ({ children }) => {
-    const auth = useProvideAuth()
-    return <authContext.Provider value={auth}>{children}</authContext.Provider>
+    const user = useProvideAuth()
+    return <authContext.Provider value={user}>{children}</authContext.Provider>
 };
 
 

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import SearchBar from '../searchBar/searchBar'
 import { ListItem, ListForm } from '..'
-import { collection, doc, getDocs, updateDoc, arrayUnion, deleteField } from 'firebase/firestore';
+import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase'
 import styles from './list.styles'
 
@@ -27,6 +27,7 @@ export default function List() {
     const [searchQuery, setSearchQuery] = useState(querys || '');
     const [noListFound, setNoListFound] = useState(false)
     const [shoppingList, setShoppingList] = useState([])
+    const [shoppingListFetched, setshoppingListFetched] = useState(false)
     const languageOrder = ["French", "German", "Dutch"]
     const userInfo = useAuth();
     const [auth, setAuth] = useState({});
@@ -38,12 +39,13 @@ export default function List() {
         const querySnapshot = await getDocs(collection(db, "lists"));
 
         querySnapshot.forEach((doc) => {
-            if (doc.data().adminId == userUID || doc.data()?.users?.includes(userUID)) {
+            if (doc.data().adminId == "backup" || doc.data()?.users?.includes(userUID)) {
                 doc.data().listItems?.map(item => newShoppingList.push(item))
             }
         });
         setShoppingList(newShoppingList)
         setNoListFound(!newShoppingList.length ? true : false)
+        setshoppingListFetched(true)
     }
 
     // Filter the list by product name
@@ -64,7 +66,8 @@ export default function List() {
             productNames: product,
             checked: false,
             id: Date.now(),
-            quantity: '1'
+            quantity: '1',
+            status: 'new'
         }
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
@@ -79,19 +82,12 @@ export default function List() {
     }
 
     // Update shopping list in Firestore after change
-    const saveShoppingListInFS = () => {
-        shoppingList.forEach(async function (product) {
-            const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
+    const saveShoppingListInFS = async () => {
+        const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
 
-            await updateDoc(docRef, {
-                listItems: deleteField()
-            });
-
-            await updateDoc(docRef, {
-                listItems: arrayUnion(product)
-            });
-
-        })
+        await updateDoc(docRef, {
+            listItems: shoppingList
+        });
     }
 
     useEffect(() => {
@@ -103,7 +99,7 @@ export default function List() {
     }, [userUID])
 
     useEffect(() => {
-        saveShoppingListInFS()
+        shoppingListFetched && saveShoppingListInFS()
     }, [shoppingList])
 
     return (
@@ -144,6 +140,7 @@ export default function List() {
                 handleSubmit={handleSubmit}
                 register={register}
                 errors={errors}
+                setSearchQuery={setSearchQuery}
             />
             {/* Column Titles from checked list */}
 

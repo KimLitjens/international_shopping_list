@@ -6,7 +6,6 @@ const SearchBar = ({ clearInputField, searchQuery, setSearchQuery }) => (
 
         </label>
         <input
-            value={searchQuery}
             onInput={e => setSearchQuery(e.target.value.toLowerCase())}
             type="text"
             id="header-search"

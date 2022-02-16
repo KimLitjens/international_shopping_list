@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useAuth } from '../utils/hooks/useAuth';
 import * as ROUTES from '../constants/routes'
 

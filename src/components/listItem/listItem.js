@@ -7,20 +7,24 @@ export default function ListItem({
     shoppingList,
     setShoppingList }) {
 
+    const [editingList, setEditingList] = useState([])
     const [editing, setEditing] = useState(false)
     const productNames = product.productNames
     const productId = product.id
     const checked = product.checked
 
     // Clicking the delete button
-    const handleDelete = async item => {
-        const productList = [...shoppingList]
-        await productList.map(product => product.id == item.target.id ? product.deleted = true : null)
-        setShoppingList(productList)
+    const handleDelete = product => {
+        const newShoppingList = [...shoppingList]
+        const shoppingListItem = newShoppingList.find(item => item.id == product.target.id)
+        shoppingListItem.deleted = true
+        setShoppingList(newShoppingList)
     }
 
-    const handleUpdatedDone = event => {
+    const handleUpdatedDone = async (event) => {
         if (event.key === "Enter") {
+            await setShoppingList(editingList)
+            setEditingList([])
             setEditing(false)
         }
     }
@@ -31,14 +35,16 @@ export default function ListItem({
     // changing item
     const handleOnChange = (language, id, value,) => {
         const newShoppingList = [...shoppingList]
-        newShoppingList.find(item => item.id == id).productNames[language] = value
-        setShoppingList(newShoppingList)
+        const shoppingListItem = newShoppingList.find(item => item.id == id)
+        shoppingListItem.productNames[language] = value
+        setEditingList(newShoppingList)
     }
     // changing quantity from item
     const handleQuantityOnChange = (id, value,) => {
         const newShoppingList = [...shoppingList]
-        newShoppingList.find(item => item.id == id).quantity = value
-        setShoppingList(newShoppingList)
+        const shoppingListItem = newShoppingList.find(item => item.id == id)
+        shoppingListItem.quantity = value
+        setEditingList(newShoppingList)
     }
 
     const handleChange = async item => {
@@ -84,6 +90,7 @@ export default function ListItem({
                     X
                 </button>
             </div>
+            {/* Editing mode  */}
             <div className={styles.inputDiv({ checked, editing })}>
                 <div></div>
                 <label for={productId} className={styles.quantityLabel}><h3>Quantity: </h3></label>

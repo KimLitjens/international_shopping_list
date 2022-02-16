@@ -1,9 +1,13 @@
 import React from 'react'
 import styles from './listForm.styles'
 
-export default function ListForm({ handleSubmit, onSubmit, register, errors }) {
+export default function ListForm({ handleSubmit, onSubmit, register, errors, setSearchQuery }) {
     return (
-        <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <form
+            className={styles.form}
+            onSubmit={handleSubmit(onSubmit)}
+            onInput={e => setSearchQuery(e.target.value.toLowerCase())}
+        >
             <input className={styles.input} {...register("French")} placeholder="French" />
             <input className={styles.input} {...register("German")} placeholder="German" />
             <input className={styles.input} {...register("Dutch")} placeholder="Dutch" />
