@@ -140,6 +140,7 @@ export default function List() {
                 handleSubmit={handleSubmit}
                 register={register}
                 errors={errors}
+                setSearchQuery={setSearchQuery}
             />
             {/* Column Titles from checked list */}
 
