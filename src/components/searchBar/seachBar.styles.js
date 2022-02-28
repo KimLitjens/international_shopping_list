@@ -3,7 +3,7 @@ const styles = {
         "hidden",
     ].join(' '),
     button: [
-        "bg-yellow-500",
+        "bg-accent",
         "px-2",
         "mx-2",
     ].join(' ')

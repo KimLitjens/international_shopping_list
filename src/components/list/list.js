@@ -123,7 +123,7 @@ export default function List() {
                 })}
                 <div></div>
             </div>
-
+            {/* List products  */}
             {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
                 return <ListItem
                     product={product}

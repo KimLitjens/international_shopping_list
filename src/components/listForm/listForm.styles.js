@@ -12,12 +12,14 @@ const styles = {
             focus:ring-0 
             focus:border-yellow-500 
             md: mr-4
+            dark:placeholder-dark-accent
+            dark:border-dark-accent
             `
     ],
     submit: [
         `
             py-1 px-3 
-            bg-yellow-500 text-dark text-xs uppercase font-black
+            bg-accent text-dark text-xs uppercase font-black
             rounded inline-block 
             cursor-pointer tracking-widest 
             transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110
