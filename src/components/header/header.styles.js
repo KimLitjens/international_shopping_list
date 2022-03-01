@@ -3,7 +3,7 @@ const styles = {
         `ml-4 flex self-center text-center`
     ],
     div: [
-        `flex justify-between`
+        `flex justify-between bg-first dark:bg-dark-first dark:text-dark-secondAccent`
     ],
     h1: [
         `text-center my-4`

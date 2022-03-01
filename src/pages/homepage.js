@@ -37,11 +37,11 @@ export default function Homepage() {
         setAuth(userInfo)
     }, [userInfo])
     return (
-        <>
+        <div className="min-h-screen bg-gray-200 dark:bg-dark-third">
             <Header />
             {/* <h2>Your lists:</h2> */}
             {/* {!!lists && lists.map(list => <p key={list}>{list}</p>)} */}
             <List />
-        </>
+        </div>
     )
 }
