@@ -28,7 +28,7 @@ export default function List() {
     const [noListFound, setNoListFound] = useState(false)
     const [shoppingList, setShoppingList] = useState([])
     const [shoppingListFetched, setshoppingListFetched] = useState(false)
-    const languageOrder = ["French", "German", "Dutch"]
+    const [languages, setLanguages] = useState([])
     const userInfo = useAuth();
     const [auth, setAuth] = useState({});
     const userUID = auth?.currentUser?.uid
@@ -59,6 +59,19 @@ export default function List() {
         });
     };
 
+    // Get languages from Firestore
+    const getLanguagesFromFS = async () => {
+        const allLanguagesUsed = []
+        const querySnapshot = await getDocs(collection(db, "lists"));
+
+        querySnapshot.forEach((doc) => {
+            if (doc.data().adminId == userUID || doc.data()?.users?.includes(userUID)) {
+                doc.data().usedLanguages?.map(item => allLanguagesUsed.push(item))
+            }
+        });
+        setLanguages(allLanguagesUsed)
+    }
+
     const filterdProducts = filterProducts(shoppingList, searchQuery);
 
     const onSubmit = product => {
@@ -84,7 +97,7 @@ export default function List() {
     // Update shopping list in Firestore after change
     const saveShoppingListInFS = async () => {
         const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
-
+        console.log(shoppingList)
         await updateDoc(docRef, {
             listItems: shoppingList
         });
@@ -96,6 +109,7 @@ export default function List() {
 
     useEffect(() => {
         getProducts()
+        getLanguagesFromFS()
     }, [userUID])
 
     useEffect(() => {
@@ -113,12 +127,12 @@ export default function List() {
             {/* Title */}
             <h2 className={styles.h2}>Shopping List: </h2>
             {/* Column Titles */}
-            <div className="w-10/12 grid grid-cols-12 gap-4">
+            <div className={styles.listTitles}>
                 <div></div>
                 <div className="text-center underline">
                     <h3>Qty</h3>
                 </div>
-                {languageOrder.map(language => {
+                {languages.map(language => {
                     return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
                 })}
                 <div></div>
@@ -129,7 +143,7 @@ export default function List() {
                     product={product}
                     shoppingList={shoppingList}
                     setShoppingList={setShoppingList}
-                    languageOrder={languageOrder}
+                    languages={languages}
                 />
             })}
             {/* Message when no list is found */}
@@ -144,12 +158,12 @@ export default function List() {
             />
             {/* Column Titles from checked list */}
 
-            <div className="w-10/12 grid grid-cols-12 gap-4">
+            <div className={styles.listTitles}>
                 <div></div>
                 <div className="text-center underline">
                     <h3>Qty</h3>
                 </div>
-                {languageOrder.map(language => {
+                {languages.map(language => {
                     return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
                 })}
                 <div></div>
@@ -160,7 +174,7 @@ export default function List() {
                     product={product}
                     shoppingList={shoppingList}
                     setShoppingList={setShoppingList}
-                    languageOrder={languageOrder}
+                    languages={languages}
                 />
             })}
         </div>
