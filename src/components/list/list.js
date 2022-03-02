@@ -39,7 +39,7 @@ export default function List() {
         const querySnapshot = await getDocs(collection(db, "lists"));
 
         querySnapshot.forEach((doc) => {
-            if (doc.data().adminId == "backup" || doc.data()?.users?.includes(userUID)) {
+            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
                 doc.data().listItems?.map(item => newShoppingList.push(item))
             }
         });
@@ -65,7 +65,7 @@ export default function List() {
         const querySnapshot = await getDocs(collection(db, "lists"));
 
         querySnapshot.forEach((doc) => {
-            if (doc.data().adminId == userUID || doc.data()?.users?.includes(userUID)) {
+            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
                 doc.data().usedLanguages?.map(item => allLanguagesUsed.push(item))
             }
         });
@@ -97,7 +97,6 @@ export default function List() {
     // Update shopping list in Firestore after change
     const saveShoppingListInFS = async () => {
         const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
-        console.log(shoppingList)
         await updateDoc(docRef, {
             listItems: shoppingList
         });
@@ -133,9 +132,11 @@ export default function List() {
                     <h3>Qty</h3>
                 </div>
                 {languages.map(language => {
-                    return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
+                    return <div key={language} className="col-span-3 text-center underline">
+                        <h3>{language}</h3>
+                    </div>
                 })}
-                <div></div>
+                <></>
             </div>
             {/* List products  */}
             {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
@@ -144,6 +145,7 @@ export default function List() {
                     shoppingList={shoppingList}
                     setShoppingList={setShoppingList}
                     languages={languages}
+                    key={product.id}
                 />
             })}
             {/* Message when no list is found */}
@@ -175,6 +177,7 @@ export default function List() {
                     shoppingList={shoppingList}
                     setShoppingList={setShoppingList}
                     languages={languages}
+                    key={product.id}
                 />
             })}
         </div>

@@ -16,7 +16,7 @@ export default function ListItem({
     // Clicking the delete button
     const handleDelete = product => {
         const newShoppingList = [...shoppingList]
-        const shoppingListItem = newShoppingList.find(item => item.id == product.target.id)
+        const shoppingListItem = newShoppingList.find(item => item.id === product.target.id)
         shoppingListItem.deleted = true
         setShoppingList(newShoppingList)
     }
@@ -38,21 +38,21 @@ export default function ListItem({
     // changing item
     const handleOnChange = (language, id, value,) => {
         const newShoppingList = [...shoppingList]
-        const shoppingListItem = newShoppingList.find(item => item.id == id)
+        const shoppingListItem = newShoppingList.find(item => item.id === +id)
         shoppingListItem.productNames[language] = value
         setEditingList(newShoppingList)
     }
     // changing quantity from item
     const handleQuantityOnChange = (id, value,) => {
         const newShoppingList = [...shoppingList]
-        const shoppingListItem = newShoppingList.find(item => item.id == id)
+        const shoppingListItem = newShoppingList.find(item => item.id === +id)
         shoppingListItem.quantity = value
         setEditingList(newShoppingList)
     }
 
     const handleChange = async item => {
         const productList = [...shoppingList]
-        await productList.map(product => product.id == item.target.id ? product.checked = !product.checked : null)
+        await productList.map(product => product.id === +item.target.id ? product.checked = !product.checked : null)
         setShoppingList(productList)
     }
 
@@ -75,8 +75,8 @@ export default function ListItem({
                 </p>
                 {languages.map(choosenLanguage =>
                     Object.entries(productNames).map(([language, productName]) => {
-                        return choosenLanguage == language ?
-                            <div className={styles.language}>
+                        return choosenLanguage === language ?
+                            <div key={productName} className={styles.language}>
                                 <p className={styles.p({ checked, editing })}
                                     onDoubleClick={handleEditing}
                                 >
@@ -96,7 +96,7 @@ export default function ListItem({
             {/* Editing mode  */}
             <div className={styles.inputDiv({ checked, editing })}>
                 <div></div>
-                <label for={productId} className={styles.quantityLabel}><h3>Quantity: </h3></label>
+                <label className={styles.quantityLabel}><h3>Quantity: </h3></label>
                 <input
                     type="text"
                     className={styles.quantityEditing}
@@ -110,7 +110,7 @@ export default function ListItem({
 
                 {languages.map(choosenLanguage =>
                     Object.entries(productNames).map(([language, productName]) => {
-                        return choosenLanguage == language ? <>
+                        return choosenLanguage === language ? <>
                             <label className={styles.languageLabel}>
                                 <h3>{language}: </h3>
                             </label>
