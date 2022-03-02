@@ -22,8 +22,11 @@ export default function ListItem({
     }
 
     const handleUpdatedDone = async (event) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && !editingList) {
             await setShoppingList(editingList)
+            setEditingList([])
+            setEditing(false)
+        } else if (event.key === "Enter" && editingList) {
             setEditingList([])
             setEditing(false)
         }
