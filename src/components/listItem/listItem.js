@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './listItem.styles'
 
 export default function ListItem({
-    languages,
+    shownLanguages,
     product,
     shoppingList,
     setShoppingList }) {
@@ -73,7 +73,7 @@ export default function ListItem({
                     onDoubleClick={handleEditing}>
                     {product.quantity}
                 </p>
-                {languages.map(choosenLanguage =>
+                {shownLanguages.map(choosenLanguage =>
                     Object.entries(productNames).map(([language, productName]) => {
                         return choosenLanguage === language ?
                             <div key={productName} className={styles.language}>
@@ -108,7 +108,7 @@ export default function ListItem({
                     onKeyDown={handleUpdatedDone}
                 />
 
-                {languages.map(choosenLanguage =>
+                {shownLanguages.map(choosenLanguage =>
                     Object.entries(productNames).map(([language, productName]) => {
                         return choosenLanguage === language ? <>
                             <label className={styles.languageLabel}>

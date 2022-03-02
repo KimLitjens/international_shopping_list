@@ -1,8 +1,12 @@
 
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import SearchBar from '../searchBar/searchBar'
-import { ListItem, ListForm } from '..'
+import {
+    ColumnTitles,
+    ListItem,
+    ListForm,
+    SearchBar
+} from '..'
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase'
 import styles from './list.styles'
@@ -28,7 +32,8 @@ export default function List() {
     const [noListFound, setNoListFound] = useState(false)
     const [shoppingList, setShoppingList] = useState([])
     const [shoppingListFetched, setshoppingListFetched] = useState(false)
-    const [languages, setLanguages] = useState([])
+    const [shownLanguages, setShownLanguages] = useState([])
+    const [hiddenLanguages, setHiddenLanguages] = useState([])
     const userInfo = useAuth();
     const [auth, setAuth] = useState({});
     const userUID = auth?.currentUser?.uid
@@ -61,15 +66,22 @@ export default function List() {
 
     // Get languages from Firestore
     const getLanguagesFromFS = async () => {
-        const allLanguagesUsed = []
+        const shownLanguages = []
+        const hiddenLanguages = []
         const querySnapshot = await getDocs(collection(db, "lists"));
 
         querySnapshot.forEach((doc) => {
             if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
-                doc.data().usedLanguages?.map(item => allLanguagesUsed.push(item))
+                doc.data().shownLanguages?.map(item => shownLanguages.push(item))
             }
         });
-        setLanguages(allLanguagesUsed)
+        querySnapshot.forEach((doc) => {
+            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
+                doc.data().hiddenLanguages?.map(item => hiddenLanguages.push(item))
+            }
+        });
+        setShownLanguages(shownLanguages)
+        setHiddenLanguages(hiddenLanguages)
     }
 
     const filterdProducts = filterProducts(shoppingList, searchQuery);
@@ -126,25 +138,17 @@ export default function List() {
             {/* Title */}
             <h2 className={styles.h2}>Shopping List: </h2>
             {/* Column Titles */}
-            <div className={styles.listTitles}>
-                <div></div>
-                <div className="text-center underline">
-                    <h3>Qty</h3>
-                </div>
-                {languages.map(language => {
-                    return <div key={language} className="col-span-3 text-center underline">
-                        <h3>{language}</h3>
-                    </div>
-                })}
-                <></>
-            </div>
+            <ColumnTitles
+                shownLanguages={shownLanguages}
+                hiddenLanguages={hiddenLanguages}
+            />
             {/* List products  */}
             {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
                 return <ListItem
                     product={product}
                     shoppingList={shoppingList}
                     setShoppingList={setShoppingList}
-                    languages={languages}
+                    shownLanguages={shownLanguages}
                     key={product.id}
                 />
             })}
@@ -165,7 +169,7 @@ export default function List() {
                 <div className="text-center underline">
                     <h3>Qty</h3>
                 </div>
-                {languages.map(language => {
+                {shownLanguages.map(language => {
                     return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
                 })}
                 <div></div>
@@ -176,7 +180,7 @@ export default function List() {
                     product={product}
                     shoppingList={shoppingList}
                     setShoppingList={setShoppingList}
-                    languages={languages}
+                    shownLanguages={shownLanguages}
                     key={product.id}
                 />
             })}
