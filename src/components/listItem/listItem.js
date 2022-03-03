@@ -16,7 +16,7 @@ export default function ListItem({
     // Clicking the delete button
     const handleDelete = product => {
         const newShoppingList = [...shoppingList]
-        const shoppingListItem = newShoppingList.find(item => item.id === product.target.id)
+        const shoppingListItem = newShoppingList.find(item => item.id === +product.target.id)
         shoppingListItem.deleted = true
         setShoppingList(newShoppingList)
     }

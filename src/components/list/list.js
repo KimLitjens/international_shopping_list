@@ -92,7 +92,8 @@ export default function List() {
             checked: false,
             id: Date.now(),
             quantity: '1',
-            status: 'new'
+            status: 'new',
+            deleted: false
         }
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
