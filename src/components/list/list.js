@@ -162,6 +162,7 @@ export default function List() {
                 register={register}
                 errors={errors}
                 setSearchQuery={setSearchQuery}
+                shownLanguages={shownLanguages}
             />
             {/* Column Titles from checked list */}
 
