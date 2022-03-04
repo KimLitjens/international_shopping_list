@@ -141,7 +141,9 @@ export default function List() {
             {/* Column Titles */}
             <ColumnTitles
                 shownLanguages={shownLanguages}
+                setShownLanguages={setShownLanguages}
                 hiddenLanguages={hiddenLanguages}
+                setHiddenLanguages={setHiddenLanguages}
             />
             {/* List products  */}
             {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
