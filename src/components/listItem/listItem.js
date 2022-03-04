@@ -57,8 +57,6 @@ export default function ListItem({
         setShoppingList(productList)
     }
 
-    console.log(editingList.length)
-
     return (
         <>
             <div className={styles.div({ editing })} >
@@ -98,7 +96,6 @@ export default function ListItem({
             {/* Editing mode  */}
             <div className={styles.inputDiv({ checked, editing })}>
                 <div></div>
-                {/* <label className={styles.quantityLabel}><h3>Quantity: </h3></label> */}
                 <input
                     type="text"
                     className={styles.quantityEditing}
@@ -112,10 +109,7 @@ export default function ListItem({
 
                 {shownLanguages.map(choosenLanguage =>
                     Object.entries(productNames).map(([language, productName]) => {
-                        return choosenLanguage === language ? <>
-                            <label className={styles.languageLabel}>
-                                <h3>{language}: </h3>
-                            </label>
+                        return choosenLanguage === language ? <div key={language} className={styles.divEditing}>
                             <input
                                 type="text"
                                 value={productName}
@@ -126,7 +120,7 @@ export default function ListItem({
                                 id={productId}
                                 onKeyDown={handleUpdatedDone}
                             />
-                        </>
+                        </div>
                             : null
                     }))}
                 <div></div>

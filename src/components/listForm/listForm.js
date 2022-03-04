@@ -16,7 +16,11 @@ export default function ListForm({
             onInput={e => setSearchQuery(e.target.value.toLowerCase())}
         >
             {shownLanguages.map(language => {
-                return <input className={styles.input} {...register(language)} placeholder={language} />
+                return <input
+                    key={language}
+                    className={styles.input}
+                    {...register(language)}
+                    placeholder={language} />
             }
             )}
             {errors.exampleRequired && <span>This field is required</span>}

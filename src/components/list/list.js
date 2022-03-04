@@ -172,7 +172,11 @@ export default function List() {
                     <h3>Qty</h3>
                 </div>
                 {shownLanguages.map(language => {
-                    return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
+                    return <div
+                        key={language}
+                        className="col-span-3 text-center underline">
+                        <h3>{language}</h3>
+                    </div>
                 })}
                 <div></div>
             </div>

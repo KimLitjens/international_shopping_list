@@ -33,8 +33,8 @@ const styles = {
             md: mr-4
         `
     ],
-    quantityLabel: [
-        `md:hidden `
+    divEditing: [
+        `col-span-3 `
     ],
     languageEditing: [
         `col-span-3
