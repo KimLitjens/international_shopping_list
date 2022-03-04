@@ -51,6 +51,18 @@ export default function ColumnTitles({
                             onClick={() => moveLanguage(language, "moveToShown")}><p>{language}</p></button>
                     </div>
                 })}
+                <input
+                    placeholder="Add New"
+                    className={`${!showHiddenLanguagesList ? "hidden" : null}
+                        w-20
+                        placeholder-gray-700
+                        bg-transparent border-0 border-b-2 border-accent
+                        appearance-none 
+                        focus:outline-none 
+                        focus:ring-0 
+                        focus:border-yellow-500 
+                        dark:placeholder-dark-secondAccent
+                        dark:border-dark-accent`} />
             </div>
         </div>
     )

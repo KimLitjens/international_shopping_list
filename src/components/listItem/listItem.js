@@ -74,17 +74,14 @@ export default function ListItem({
                     {product.quantity}
                 </p>
                 {shownLanguages.map(choosenLanguage =>
-                    Object.entries(productNames).map(([language, productName]) => {
-                        return choosenLanguage === language ?
-                            <div key={productName} className={styles.language}>
-                                <p className={styles.p({ checked, editing })}
-                                    onDoubleClick={handleEditing}
-                                >
-                                    {productName}
-                                </p>
-                            </div>
-                            : null
-                    }))}
+                    <div key={productNames[choosenLanguage]} className={styles.language}>
+                        <p className={styles.p({ checked, editing })}
+                            onDoubleClick={handleEditing}
+                        >
+                            {productNames[choosenLanguage]}
+                        </p>
+                    </div>
+                )}
                 <button
                     className={styles.button}
                     id={productId}
@@ -107,22 +104,19 @@ export default function ListItem({
                     onKeyDown={handleUpdatedDone}
                 />
 
-                {shownLanguages.map(choosenLanguage =>
-                    Object.entries(productNames).map(([language, productName]) => {
-                        return choosenLanguage === language ? <div key={language} className={styles.divEditing}>
-                            <input
-                                type="text"
-                                value={productName}
-                                className={styles.languageEditing}
-                                onChange={e => {
-                                    handleOnChange(language, e.target.id, e.target.value)
-                                }}
-                                id={productId}
-                                onKeyDown={handleUpdatedDone}
-                            />
-                        </div>
-                            : null
-                    }))}
+                {shownLanguages.map(choosenLanguage => <div key={productNames[choosenLanguage]} className={styles.divEditing}>
+                    <input
+                        type="text"
+                        value={productNames[choosenLanguage]}
+                        className={styles.languageEditing}
+                        onChange={e => {
+                            handleOnChange(productNames.language, e.target.id, e.target.value)
+                        }}
+                        id={productId}
+                        onKeyDown={handleUpdatedDone}
+                    />
+                </div>
+                )}
                 <div></div>
             </div>
         </>
