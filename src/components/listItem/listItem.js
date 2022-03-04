@@ -22,11 +22,11 @@ export default function ListItem({
     }
 
     const handleUpdatedDone = async (event) => {
-        if (event.key === "Enter" && !editingList) {
+        if (event.key === "Enter" && editingList.length > 0) {
             await setShoppingList(editingList)
             setEditingList([])
             setEditing(false)
-        } else if (event.key === "Enter" && editingList) {
+        } else if (event.key === "Enter") {
             setEditingList([])
             setEditing(false)
         }
@@ -40,6 +40,7 @@ export default function ListItem({
         const newShoppingList = [...shoppingList]
         const shoppingListItem = newShoppingList.find(item => item.id === +id)
         shoppingListItem.productNames[language] = value
+        console.log(newShoppingList)
         setEditingList(newShoppingList)
     }
     // changing quantity from item
@@ -56,6 +57,7 @@ export default function ListItem({
         setShoppingList(productList)
     }
 
+    console.log(editingList.length)
 
     return (
         <>
@@ -96,7 +98,7 @@ export default function ListItem({
             {/* Editing mode  */}
             <div className={styles.inputDiv({ checked, editing })}>
                 <div></div>
-                <label className={styles.quantityLabel}><h3>Quantity: </h3></label>
+                {/* <label className={styles.quantityLabel}><h3>Quantity: </h3></label> */}
                 <input
                     type="text"
                     className={styles.quantityEditing}
