@@ -98,8 +98,7 @@ export default function List() {
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
         reset()
-        setFocus("French")
-
+        setFocus(shownLanguages[0])
     }
 
     // clear input field
