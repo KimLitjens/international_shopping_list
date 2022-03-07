@@ -40,7 +40,6 @@ export default function ListItem({
         const newShoppingList = [...shoppingList]
         const shoppingListItem = newShoppingList.find(item => item.id === +id)
         shoppingListItem.productNames[language] = value
-        console.log(newShoppingList)
         setEditingList(newShoppingList)
     }
     // changing quantity from item
@@ -107,13 +106,13 @@ export default function ListItem({
                     onKeyDown={handleUpdatedDone}
                 />
                 <div className={"flex col-span-9 justify-around"}>
-                    {shownLanguages.map(choosenLanguage => <div key={productNames[choosenLanguage]} className={styles.divEditing}>
+                    {shownLanguages.map(choosenLanguage => <div className={styles.divEditing}>
                         <input
                             type="text"
                             value={productNames[choosenLanguage]}
                             className={styles.languageEditing}
                             onChange={e => {
-                                handleOnChange(productNames.language, e.target.id, e.target.value)
+                                handleOnChange(choosenLanguage, e.target.id, e.target.value)
                             }}
                             id={productId}
                             onKeyDown={handleUpdatedDone}
