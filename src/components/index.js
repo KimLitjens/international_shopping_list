@@ -1,6 +1,8 @@
+export { default as ColumnTitles } from './columnTitles/columnTitles'
 export { default as Header } from './header/header'
 export { default as List } from './list/list'
 export { default as ListItem } from './listItem/listItem'
 export { default as Form } from './form/form'
 export { default as ListForm } from './listForm/listForm'
+export { default as SearchBar } from './searchBar/searchBar'
 export { default as SignOutButton } from './signOut.js/signOut.js'

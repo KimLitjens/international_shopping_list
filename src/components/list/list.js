@@ -1,8 +1,12 @@
 
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
-import SearchBar from '../searchBar/searchBar'
-import { ListItem, ListForm } from '..'
+import {
+    ColumnTitles,
+    ListItem,
+    ListForm,
+    SearchBar
+} from '..'
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase'
 import styles from './list.styles'
@@ -28,7 +32,8 @@ export default function List() {
     const [noListFound, setNoListFound] = useState(false)
     const [shoppingList, setShoppingList] = useState([])
     const [shoppingListFetched, setshoppingListFetched] = useState(false)
-    const languageOrder = ["French", "German", "Dutch"]
+    const [shownLanguages, setShownLanguages] = useState([])
+    const [hiddenLanguages, setHiddenLanguages] = useState([])
     const userInfo = useAuth();
     const [auth, setAuth] = useState({});
     const userUID = auth?.currentUser?.uid
@@ -39,7 +44,7 @@ export default function List() {
         const querySnapshot = await getDocs(collection(db, "lists"));
 
         querySnapshot.forEach((doc) => {
-            if (doc.data().adminId == "backup" || doc.data()?.users?.includes(userUID)) {
+            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
                 doc.data().listItems?.map(item => newShoppingList.push(item))
             }
         });
@@ -59,6 +64,26 @@ export default function List() {
         });
     };
 
+    // Get languages from Firestore
+    const getLanguagesFromFS = async () => {
+        const shownLanguages = []
+        const hiddenLanguages = []
+        const querySnapshot = await getDocs(collection(db, "lists"));
+
+        querySnapshot.forEach((doc) => {
+            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
+                doc.data().shownLanguages?.map(item => shownLanguages.push(item))
+            }
+        });
+        querySnapshot.forEach((doc) => {
+            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
+                doc.data().hiddenLanguages?.map(item => hiddenLanguages.push(item))
+            }
+        });
+        setShownLanguages(shownLanguages)
+        setHiddenLanguages(hiddenLanguages)
+    }
+
     const filterdProducts = filterProducts(shoppingList, searchQuery);
 
     const onSubmit = product => {
@@ -67,13 +92,13 @@ export default function List() {
             checked: false,
             id: Date.now(),
             quantity: '1',
-            status: 'new'
+            status: 'new',
+            deleted: false
         }
         const newShoppingList = [...shoppingList, newListItem]
         setShoppingList(newShoppingList)
         reset()
-        setFocus("French")
-
+        setFocus(shownLanguages[0])
     }
 
     // clear input field
@@ -84,7 +109,6 @@ export default function List() {
     // Update shopping list in Firestore after change
     const saveShoppingListInFS = async () => {
         const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
-
         await updateDoc(docRef, {
             listItems: shoppingList
         });
@@ -96,6 +120,7 @@ export default function List() {
 
     useEffect(() => {
         getProducts()
+        getLanguagesFromFS()
     }, [userUID])
 
     useEffect(() => {
@@ -113,23 +138,20 @@ export default function List() {
             {/* Title */}
             <h2 className={styles.h2}>Shopping List: </h2>
             {/* Column Titles */}
-            <div className="w-10/12 grid grid-cols-12 gap-4">
-                <div></div>
-                <div className="text-center underline">
-                    <h3>Qty</h3>
-                </div>
-                {languageOrder.map(language => {
-                    return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
-                })}
-                <div></div>
-            </div>
+            <ColumnTitles
+                shownLanguages={shownLanguages}
+                setShownLanguages={setShownLanguages}
+                hiddenLanguages={hiddenLanguages}
+                setHiddenLanguages={setHiddenLanguages}
+            />
             {/* List products  */}
             {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
                 return <ListItem
                     product={product}
                     shoppingList={shoppingList}
                     setShoppingList={setShoppingList}
-                    languageOrder={languageOrder}
+                    shownLanguages={shownLanguages}
+                    key={product.id}
                 />
             })}
             {/* Message when no list is found */}
@@ -141,16 +163,21 @@ export default function List() {
                 register={register}
                 errors={errors}
                 setSearchQuery={setSearchQuery}
+                shownLanguages={shownLanguages}
             />
             {/* Column Titles from checked list */}
 
-            <div className="w-10/12 grid grid-cols-12 gap-4">
+            <div className={styles.listTitles}>
                 <div></div>
                 <div className="text-center underline">
                     <h3>Qty</h3>
                 </div>
-                {languageOrder.map(language => {
-                    return <div className="col-span-3 text-center underline"><h3>{language}</h3></div>
+                {shownLanguages.map(language => {
+                    return <div
+                        key={language}
+                        className="col-span-3 text-center underline">
+                        <h3>{language}</h3>
+                    </div>
                 })}
                 <div></div>
             </div>
@@ -160,7 +187,8 @@ export default function List() {
                     product={product}
                     shoppingList={shoppingList}
                     setShoppingList={setShoppingList}
-                    languageOrder={languageOrder}
+                    shownLanguages={shownLanguages}
+                    key={product.id}
                 />
             })}
         </div>

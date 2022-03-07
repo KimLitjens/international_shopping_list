@@ -5,7 +5,7 @@ const styles = {
         group`
     ],
     language: [
-        `col-span-3`
+        `w-1/5`
     ],
     input: [
         `mx-2`
@@ -33,12 +33,11 @@ const styles = {
             md: mr-4
         `
     ],
-    quantityLabel: [
-        `md:hidden `
+    divEditing: [
+        ``
     ],
     languageEditing: [
-        `col-span-3
-        text-yellow-700
+        `text-yellow-700
         placeholder-gray-700
         bg-transparent border-0 border-b-2 border-gray-800 
         appearance-none 

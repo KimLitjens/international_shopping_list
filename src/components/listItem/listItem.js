@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from './listItem.styles'
 
 export default function ListItem({
-    languageOrder,
+    shownLanguages,
     product,
     shoppingList,
     setShoppingList }) {
@@ -16,14 +16,17 @@ export default function ListItem({
     // Clicking the delete button
     const handleDelete = product => {
         const newShoppingList = [...shoppingList]
-        const shoppingListItem = newShoppingList.find(item => item.id == product.target.id)
+        const shoppingListItem = newShoppingList.find(item => item.id === +product.target.id)
         shoppingListItem.deleted = true
         setShoppingList(newShoppingList)
     }
 
     const handleUpdatedDone = async (event) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && editingList.length > 0) {
             await setShoppingList(editingList)
+            setEditingList([])
+            setEditing(false)
+        } else if (event.key === "Enter") {
             setEditingList([])
             setEditing(false)
         }
@@ -35,24 +38,23 @@ export default function ListItem({
     // changing item
     const handleOnChange = (language, id, value,) => {
         const newShoppingList = [...shoppingList]
-        const shoppingListItem = newShoppingList.find(item => item.id == id)
+        const shoppingListItem = newShoppingList.find(item => item.id === +id)
         shoppingListItem.productNames[language] = value
         setEditingList(newShoppingList)
     }
     // changing quantity from item
     const handleQuantityOnChange = (id, value,) => {
         const newShoppingList = [...shoppingList]
-        const shoppingListItem = newShoppingList.find(item => item.id == id)
+        const shoppingListItem = newShoppingList.find(item => item.id === +id)
         shoppingListItem.quantity = value
         setEditingList(newShoppingList)
     }
 
     const handleChange = async item => {
         const productList = [...shoppingList]
-        await productList.map(product => product.id == item.target.id ? product.checked = !product.checked : null)
+        await productList.map(product => product.id === +item.target.id ? product.checked = !product.checked : null)
         setShoppingList(productList)
     }
-
 
     return (
         <>
@@ -70,18 +72,19 @@ export default function ListItem({
                     onDoubleClick={handleEditing}>
                     {product.quantity}
                 </p>
-                {languageOrder.map(choosenLanguage =>
-                    Object.entries(productNames).map(([language, productName]) => {
-                        return choosenLanguage == language ?
-                            <div className={styles.language}>
-                                <p className={styles.p({ checked, editing })}
-                                    onDoubleClick={handleEditing}
-                                >
-                                    {productName}
-                                </p>
-                            </div>
-                            : null
-                    }))}
+                <div className={"flex col-span-9 justify-around"}>
+                    {shownLanguages.map(choosenLanguage =>
+                        <div key={productNames[choosenLanguage]}
+                            className={styles.language}
+                            onDoubleClick={handleEditing}>
+                            <p className={styles.p({ checked, editing })}
+                                onDoubleClick={handleEditing}
+                            >
+                                {productNames[choosenLanguage]}
+                            </p>
+                        </div>
+                    )}
+                </div>
                 <button
                     className={styles.button}
                     id={productId}
@@ -93,7 +96,6 @@ export default function ListItem({
             {/* Editing mode  */}
             <div className={styles.inputDiv({ checked, editing })}>
                 <div></div>
-                <label for={productId} className={styles.quantityLabel}><h3>Quantity: </h3></label>
                 <input
                     type="text"
                     className={styles.quantityEditing}
@@ -104,26 +106,21 @@ export default function ListItem({
                     id={productId}
                     onKeyDown={handleUpdatedDone}
                 />
-
-                {languageOrder.map(choosenLanguage =>
-                    Object.entries(productNames).map(([language, productName]) => {
-                        return choosenLanguage == language ? <>
-                            <label className={styles.languageLabel}>
-                                <h3>{language}: </h3>
-                            </label>
-                            <input
-                                type="text"
-                                value={productName}
-                                className={styles.languageEditing}
-                                onChange={e => {
-                                    handleOnChange(language, e.target.id, e.target.value)
-                                }}
-                                id={productId}
-                                onKeyDown={handleUpdatedDone}
-                            />
-                        </>
-                            : null
-                    }))}
+                <div className={"flex col-span-9 justify-around"}>
+                    {shownLanguages.map(choosenLanguage => <div className={styles.divEditing}>
+                        <input
+                            type="text"
+                            value={productNames[choosenLanguage]}
+                            className={styles.languageEditing}
+                            onChange={e => {
+                                handleOnChange(choosenLanguage, e.target.id, e.target.value)
+                            }}
+                            id={productId}
+                            onKeyDown={handleUpdatedDone}
+                        />
+                    </div>
+                    )}
+                </div>
                 <div></div>
             </div>
         </>
