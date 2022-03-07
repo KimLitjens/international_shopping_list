@@ -32,14 +32,17 @@ export default function ColumnTitles({
             <div className="text-center underline">
                 <h3>Qty</h3>
             </div>
-            {shownLanguages.map(language => {
-                return <div key={language} className="col-span-3 text-center underline">
-                    <button
-                        onClick={() => moveLanguage(language, "moveToHidden")}>
-                        <h3>{language}</h3>
-                    </button>
-                </div>
-            })}
+            <div className={"flex col-span-9 justify-around"}>
+                {shownLanguages.map(language => {
+                    return <div key={language} className="col-span-3 text-center underline">
+                        <button
+                            onClick={() => moveLanguage(language, "moveToHidden")}>
+                            <h3>{language}</h3>
+                        </button>
+                    </div>
+                })}
+            </div>
+
             <div>
                 <button
                     onClick={showHiddenLanguages}>

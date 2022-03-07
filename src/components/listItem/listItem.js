@@ -73,15 +73,18 @@ export default function ListItem({
                     onDoubleClick={handleEditing}>
                     {product.quantity}
                 </p>
-                {shownLanguages.map(choosenLanguage =>
-                    <div key={productNames[choosenLanguage]} className={styles.language}>
-                        <p className={styles.p({ checked, editing })}
-                            onDoubleClick={handleEditing}
-                        >
-                            {productNames[choosenLanguage]}
-                        </p>
-                    </div>
-                )}
+                <div className={"flex col-span-9 justify-around"}>
+
+                    {shownLanguages.map(choosenLanguage =>
+                        <div key={productNames[choosenLanguage]} className={styles.language}>
+                            <p className={styles.p({ checked, editing })}
+                                onDoubleClick={handleEditing}
+                            >
+                                {productNames[choosenLanguage]}
+                            </p>
+                        </div>
+                    )}
+                </div>
                 <button
                     className={styles.button}
                     id={productId}
@@ -103,20 +106,21 @@ export default function ListItem({
                     id={productId}
                     onKeyDown={handleUpdatedDone}
                 />
-
-                {shownLanguages.map(choosenLanguage => <div key={productNames[choosenLanguage]} className={styles.divEditing}>
-                    <input
-                        type="text"
-                        value={productNames[choosenLanguage]}
-                        className={styles.languageEditing}
-                        onChange={e => {
-                            handleOnChange(productNames.language, e.target.id, e.target.value)
-                        }}
-                        id={productId}
-                        onKeyDown={handleUpdatedDone}
-                    />
+                <div className={"flex col-span-9 justify-around"}>
+                    {shownLanguages.map(choosenLanguage => <div key={productNames[choosenLanguage]} className={styles.divEditing}>
+                        <input
+                            type="text"
+                            value={productNames[choosenLanguage]}
+                            className={styles.languageEditing}
+                            onChange={e => {
+                                handleOnChange(productNames.language, e.target.id, e.target.value)
+                            }}
+                            id={productId}
+                            onKeyDown={handleUpdatedDone}
+                        />
+                    </div>
+                    )}
                 </div>
-                )}
                 <div></div>
             </div>
         </>
