@@ -73,9 +73,10 @@ export default function ListItem({
                     {product.quantity}
                 </p>
                 <div className={"flex col-span-9 justify-around"}>
-
                     {shownLanguages.map(choosenLanguage =>
-                        <div key={productNames[choosenLanguage]} className={styles.language}>
+                        <div key={productNames[choosenLanguage]}
+                            className={styles.language}
+                            onDoubleClick={handleEditing}>
                             <p className={styles.p({ checked, editing })}
                                 onDoubleClick={handleEditing}
                             >
