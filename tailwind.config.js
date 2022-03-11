@@ -15,6 +15,7 @@ module.exports = {
     },
   },
   variants: {
+    backgroundColor: ['hover'],
     extend: {
       visibility: ["group-hover"],
     },
