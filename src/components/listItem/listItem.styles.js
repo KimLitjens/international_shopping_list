@@ -3,7 +3,8 @@ const styles = {
         `w-10/12 grid grid-cols-12 gap-4 
         ${editing ? `hidden` : null}
         group
-        hover:bg-first`
+        hover:bg-first dark:hover:bg-dark-second
+        `
     ],
     language: [
         `w-1/5`
