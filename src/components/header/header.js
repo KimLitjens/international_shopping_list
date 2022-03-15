@@ -29,9 +29,7 @@ export default function Header() {
                 isDarkMode={isDarkMode}
                 setIsDarkMode={setIsDarkMode}
             />
-
             <h2 className={styles.welcome}>{welcomeMessage}</h2>
-            <h1 className={styles.h1}>My International Shopping List</h1>
             <SignOutButton />
         </div>
     )
