@@ -35,11 +35,11 @@ const styles = {
             focus:outline-none 
             focus:ring-0 
             focus:border-yellow-500 
-            md: mr-4
+            md:mr-2
         `
     ],
     divEditing: [
-        ``
+        `flex justify-between md:w-1/5`
     ],
     languageEditing: [
         `text-yellow-700
@@ -49,11 +49,10 @@ const styles = {
         focus:outline-none 
         focus:ring-0 
         focus:border-yellow-500 
-        md: mr-4
-         `
+        `
     ],
-    languageLabel: [
-        `md:hidden
+    inputLabel: [
+        `mr-2 md:hidden
          `
     ],
     button: [
