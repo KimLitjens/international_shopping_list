@@ -2,13 +2,18 @@ const styles = {
     div: ({ editing }) => [
         `w-10/12 grid grid-cols-12 gap-4 
         ${editing ? `hidden` : null}
-        group`
+        group
+        hover:bg-first dark:hover:bg-dark-second
+        `
     ],
     language: [
         `w-1/5`
     ],
+    label: [
+        `flex`
+    ],
     input: [
-        `mx-2`
+        `mx-2 self-center`
     ],
     p: ({ checked, editing }) => [
         `text-center 

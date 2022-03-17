@@ -5,7 +5,6 @@ import {
     ColumnTitles,
     ListItem,
     ListForm,
-    SearchBar
 } from '..'
 import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase'
@@ -129,12 +128,6 @@ export default function List() {
 
     return (
         <div className={styles.div}>
-            {/* List Filter */}
-            <SearchBar
-                searchQuery={searchQuery}
-                setSearchQuery={setSearchQuery}
-                clearInputField={clearInputField}
-            />
             {/* Title */}
             <h2 className={styles.h2}>Shopping List: </h2>
             {/* Column Titles */}

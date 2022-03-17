@@ -59,7 +59,7 @@ export default function ListItem({
     return (
         <>
             <div className={styles.div({ editing })} >
-                <label >
+                <label className={styles.label}>
                     <input
                         className={styles.input}
                         type="checkbox"
