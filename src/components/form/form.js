@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
+
 import styles from './form.styles'
 import { firebaseApp, db } from '../../firebase'
 import * as ROUTES from '../../constants/routes'
@@ -9,6 +11,7 @@ import { useForm } from "react-hook-form";
 
 export default function Form({ type }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const [isPasswordRevealed, setIsPasswordRevealed] = useState(false)
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const auth = getAuth()
@@ -61,6 +64,10 @@ export default function Form({ type }) {
         }
     };
 
+    const toggleIsRevealed = () => {
+        setIsPasswordRevealed(!isPasswordRevealed)
+    }
+
     return (
         <div className={styles.Page}>
             <div className={styles.Container}>
@@ -110,15 +117,21 @@ export default function Form({ type }) {
                             placeholder="Email"
                             type="email"
                         />
-                        {errors.password && <span className={styles.Error}>
-                            Password is required
-                        </span>}
-                        <input
-                            className={styles.Input}
-                            {...register("password", { required: true })}
-                            placeholder="password"
-                            type="password"
-                        />
+                        <div className="relative ">
+                            {errors.password && <span className={styles.Error}>
+                                Password is required
+                            </span>}
+                            <input
+                                className={styles.passwordInput}
+                                {...register("password", { required: true })}
+                                placeholder="password"
+                                type={isPasswordRevealed ? "text" : "password"}
+                            />
+                            <span onClick={() => toggleIsRevealed()}>{isPasswordRevealed ?
+                                <EyeIcon className={styles.inputIcon} /> :
+                                <EyeOffIcon className={styles.inputIcon} />}
+                            </span>
+                        </div>
                         {errorMessage && <p>{errorMessage}</p>}
                         <input
                             className={styles.Submit}
@@ -137,7 +150,7 @@ export default function Form({ type }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
 
     )
 }
