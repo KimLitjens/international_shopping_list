@@ -96,18 +96,27 @@ export default function ListItem({
             {/* Editing mode  */}
             <div className={styles.inputDiv({ checked, editing })}>
                 <div></div>
-                <input
-                    type="text"
-                    className={styles.quantityEditing}
-                    value={product.quantity}
-                    onChange={e => {
-                        handleQuantityOnChange(e.target.id, e.target.value)
-                    }}
-                    id={productId}
-                    onKeyDown={handleUpdatedDone}
-                />
-                <div className={"flex col-span-9 justify-around"}>
+                <div className={styles.divEditing}>
+                    <span className={styles.inputLabel}>
+                        <p>Qty.: </p>
+                    </span>
+                    <input
+                        type="text"
+                        className={styles.quantityEditing}
+                        value={product.quantity}
+                        onChange={e => {
+                            handleQuantityOnChange(e.target.id, e.target.value)
+                        }}
+                        id={productId}
+                        onKeyDown={handleUpdatedDone}
+                    />
+                </div>
+
+                <div className={"flex flex-col md:flex-row col-span-9 justify-around"}>
                     {shownLanguages.map(choosenLanguage => <div className={styles.divEditing}>
+                        <span className={styles.inputLabel}>
+                            <p>{choosenLanguage}: </p>
+                        </span>
                         <input
                             type="text"
                             value={productNames[choosenLanguage]}

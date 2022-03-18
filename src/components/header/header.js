@@ -9,8 +9,8 @@ import { useAuth } from '../../utils/hooks/useAuth'
 export default function Header() {
     const userInfo = useAuth();
     const [auth, setAuth] = useState({});
-    const [isDarkMode, setIsDarkMode] = useState(false);
-
+    const darkMode = window.matchMedia('(prefers-color-scheme: dark)')?.matches;
+    const [isDarkMode, setIsDarkMode] = useState(darkMode || false);
 
     useEffect(() => {
         document.body.classList.toggle("dark", isDarkMode)
