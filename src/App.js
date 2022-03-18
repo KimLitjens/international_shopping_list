@@ -8,6 +8,8 @@ import SignUp from './pages/sign-up'
 import { ProvideAuth } from './utils/hooks/useAuth'
 
 function App() {
+  const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  console.log(darkMode)
   return (
     <Router>
       <ProvideAuth>
