@@ -98,6 +98,7 @@ export default function List() {
         setShoppingList(newShoppingList)
         reset()
         setFocus(shownLanguages[0])
+        setSearchQuery('')
     }
 
     // clear input field
