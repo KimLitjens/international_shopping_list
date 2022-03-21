@@ -32,7 +32,8 @@ export default function Form({ type }) {
                         firstName: data.firstName.toLowerCase(),
                         lastName: data.lastName.toLowerCase(),
                         emailAddress: data.email.toLowerCase(),
-                        dateCreated: Date.now()
+                        dateCreated: Date.now(),
+                        lists: []
                     })
 
 
