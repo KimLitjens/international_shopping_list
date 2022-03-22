@@ -29,6 +29,7 @@ export default function List() {
     const querys = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(querys || '');
     const [noListFound, setNoListFound] = useState(false)
+    const [listTitle, setListTitle] = useState('')
     const [shoppingList, setShoppingList] = useState([])
     const [shoppingListFetched, setshoppingListFetched] = useState(false)
     const [shownLanguages, setShownLanguages] = useState([])
@@ -43,8 +44,9 @@ export default function List() {
         const querySnapshot = await getDocs(collection(db, "lists"));
 
         querySnapshot.forEach((doc) => {
-            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
+            if (doc.data().adminId === "backup" || doc.data()?.users?.includes(userUID)) {
                 doc.data().listItems?.map(item => newShoppingList.push(item))
+                setListTitle(doc.data().listTitle)
             }
         });
         setShoppingList(newShoppingList)
@@ -130,7 +132,7 @@ export default function List() {
     return (
         <div className={styles.div}>
             {/* Title */}
-            <h2 className={styles.h2}>Shopping List: </h2>
+            <h2 className={styles.h2}>{listTitle}: </h2>
             {/* Column Titles */}
             <ColumnTitles
                 shownLanguages={shownLanguages}
