@@ -1,17 +1,21 @@
 
 import React, { useState, useEffect } from 'react'
+
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../../utils/hooks/useAuth'
 import {
     ColumnTitles,
     ListItem,
     ListForm,
 } from '..'
-import { collection, doc, getDocs, updateDoc } from 'firebase/firestore';
-import { db } from '../../firebase'
 import styles from './list.styles'
 
-
-import { useAuth } from '../../utils/hooks/useAuth'
+import {
+    getLanguagesFromFS,
+    getListItemsFromFS,
+    getListTitleFromFS,
+    saveShoppingListInFS
+} from '../../utils/services/firebase'
 
 export default function List() {
     const { register,
@@ -28,64 +32,51 @@ export default function List() {
     const { search } = window.location;
     const querys = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(querys || '');
-    const [noListFound, setNoListFound] = useState(false)
+    const [filterdProducts, setfilterdProducts] = useState([])
     const [listTitle, setListTitle] = useState('')
     const [shoppingList, setShoppingList] = useState([])
     const [shoppingListFetched, setshoppingListFetched] = useState(false)
+    const [noListFound, setNoListFound] = useState(false)
     const [shownLanguages, setShownLanguages] = useState([])
     const [hiddenLanguages, setHiddenLanguages] = useState([])
+
     const userInfo = useAuth();
     const [auth, setAuth] = useState({});
     const userUID = auth?.currentUser?.uid
 
     // Get al products from FireStore
     const getProducts = async () => {
-        const newShoppingList = []
-        const querySnapshot = await getDocs(collection(db, "lists"));
-
-        querySnapshot.forEach((doc) => {
-            if (doc.data().adminId === "backup" || doc.data()?.users?.includes(userUID)) {
-                doc.data().listItems?.map(item => newShoppingList.push(item))
-                setListTitle(doc.data().listTitle)
-            }
-        });
-        setShoppingList(newShoppingList)
-        setNoListFound(!newShoppingList.length ? true : false)
+        const listItems = await getListItemsFromFS(userUID)
+        setShoppingList(listItems)
+        setNoListFound(!listItems.length ? true : false)
         setshoppingListFetched(true)
     }
 
-    // Filter the list by product name
-    const filterProducts = (shoppingList, searchQuery) => {
-        if (!searchQuery) {
-            return shoppingList;
-        }
-        return shoppingList.filter((product) => {
-            const productNames = Object.values(product.productNames);
-            return productNames.some(product => product.toLowerCase().includes(searchQuery));
-        });
-    };
-
     // Get languages from Firestore
-    const getLanguagesFromFS = async () => {
-        const shownLanguages = []
-        const hiddenLanguages = []
-        const querySnapshot = await getDocs(collection(db, "lists"));
-
-        querySnapshot.forEach((doc) => {
-            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
-                doc.data().shownLanguages?.map(item => shownLanguages.push(item))
-            }
-        });
-        querySnapshot.forEach((doc) => {
-            if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
-                doc.data().hiddenLanguages?.map(item => hiddenLanguages.push(item))
-            }
-        });
-        setShownLanguages(shownLanguages)
-        setHiddenLanguages(hiddenLanguages)
+    const getLanguages = async () => {
+        const languages = await getLanguagesFromFS(userUID)
+        setShownLanguages(languages.shownLanguages)
+        setHiddenLanguages(languages.hiddenLanguages)
     }
 
-    const filterdProducts = filterProducts(shoppingList, searchQuery);
+    // Get list Title from firestore
+    const getListTitle = async () => {
+        const listTitle = await getListTitleFromFS(userUID)
+        setListTitle(listTitle)
+    }
+    // Filter the list by product name
+    const filterProducts = (shoppingList, searchQuery) => {
+        const filterdList = () => {
+            if (!searchQuery) {
+                return shoppingList;
+            }
+            return shoppingList.filter((product) => {
+                const productNames = Object.values(product.productNames);
+                return productNames.some(product => product.toLowerCase().includes(searchQuery));
+            });
+        }
+        setfilterdProducts(filterdList)
+    };
 
     const onSubmit = product => {
         const newListItem = {
@@ -103,30 +94,22 @@ export default function List() {
         setSearchQuery('')
     }
 
-    // clear input field
-    const clearInputField = () => {
-        setSearchQuery("")
-    }
-
-    // Update shopping list in Firestore after change
-    const saveShoppingListInFS = async () => {
-        const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
-        await updateDoc(docRef, {
-            listItems: shoppingList
-        });
-    }
-
     useEffect(() => {
         setAuth(userInfo)
     }, [userInfo]);
 
     useEffect(() => {
+        getLanguages()
+        getListTitle()
         getProducts()
-        getLanguagesFromFS()
     }, [userUID])
 
     useEffect(() => {
-        shoppingListFetched && saveShoppingListInFS()
+        filterProducts(shoppingList, searchQuery)
+    }, [shoppingList, searchQuery]);
+
+    useEffect(() => {
+        shoppingListFetched && saveShoppingListInFS(shoppingList)
     }, [shoppingList])
 
     return (
