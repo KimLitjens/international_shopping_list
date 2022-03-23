@@ -146,20 +146,12 @@ export default function List() {
             />
             {/* Column Titles from checked list */}
 
-            <div className={styles.listTitles}>
-                <div></div>
-                <div className="text-center underline">
-                    <h3>Qty</h3>
-                </div>
-                {shownLanguages.map(language => {
-                    return <div
-                        key={language}
-                        className="col-span-3 text-center underline">
-                        <h3>{language}</h3>
-                    </div>
-                })}
-                <div></div>
-            </div>
+            <ColumnTitles
+                shownLanguages={shownLanguages}
+                setShownLanguages={setShownLanguages}
+                hiddenLanguages={hiddenLanguages}
+                setHiddenLanguages={setHiddenLanguages}
+            />
 
             {filterdProducts.filter(product => product.checked && !product.deleted).map(product => {
                 return <ListItem
