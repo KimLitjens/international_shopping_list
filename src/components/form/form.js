@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/outline'
+import { useForm } from "react-hook-form";
+import {
+    getAuth,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    updateProfile
+} from "firebase/auth";
 
 import styles from './form.styles'
 import { firebaseApp, db } from '../../firebase'
 import * as ROUTES from '../../constants/routes'
 import { setDoc, doc } from "firebase/firestore"
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { useForm } from "react-hook-form";
 
 export default function Form({ type }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
@@ -32,7 +37,8 @@ export default function Form({ type }) {
                         firstName: data.firstName.toLowerCase(),
                         lastName: data.lastName.toLowerCase(),
                         emailAddress: data.email.toLowerCase(),
-                        dateCreated: Date.now()
+                        dateCreated: Date.now(),
+                        lists: []
                     })
 
 
