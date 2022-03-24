@@ -6,7 +6,7 @@ export async function getListItemsFromFS(userUID) {
     const querySnapshot = await getDocs(collection(db, "lists"));
 
     querySnapshot.forEach((doc) => {
-        if (doc.data().adminId === "backup" || doc.data()?.users?.includes(userUID)) {
+        if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
             doc.data().listItems?.map(item => listItems.push(item))
         }
     });

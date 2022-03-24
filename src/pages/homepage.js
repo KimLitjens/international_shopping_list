@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Header, List, NewList } from '../components'
+import { Header, List } from '../components'
 import {
     getUsersListsFromFS,
 } from '../utils/services/firebase'
@@ -28,7 +28,7 @@ export default function Homepage() {
     return (
         <div className="min-h-screen bg-gray-200 dark:bg-dark-third">
             <Header />
-            {lists.length > 0 ? <List /> : <NewList />}
+            {lists.length > 0 ? <List /> : <p className="text-center text-accent">Now List Found </p>}
         </div>
     )
 }
