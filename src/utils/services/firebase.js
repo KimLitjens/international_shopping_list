@@ -1,5 +1,6 @@
 import { db } from '../../firebase'
-import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import { uuid } from 'uuidv4'
 
 export async function getListItemsFromFS(userUID) {
     const listItems = []
@@ -58,4 +59,21 @@ export async function getUsersListsFromFS(userUID) {
         console.log("No such document!");
     }
     return fetchedLists
+}
+
+export async function addListToFS(userUID) {
+    const listsUUID = uuid()
+    const docRef = doc(db, "lists", listsUUID);
+
+    await setDoc(docRef, {
+        adminId: userUID,
+        docId: listsUUID,
+        hiddenLanguages: [],
+        listItems: [],
+        listTitle: "",
+        shownLanguages: [],
+        users: []
+    })
+    console.log("new list is made")
+
 }

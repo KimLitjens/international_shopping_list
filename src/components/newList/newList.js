@@ -1,14 +1,14 @@
 import React, { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
+import { addListToFS } from '../../utils/services/firebase'
+import { useAuth } from '../../utils/hooks/useAuth'
 import styles from './styles.newList'
 
 export default function NewList() {
+    const userInfo = useAuth();
+    const userUID = userInfo.currentUser.uid
     let [isOpen, setIsOpen] = useState(false)
-
-    function closeModal() {
-        setIsOpen(false)
-    }
 
     function cancelNewList() {
         console.log("New list is canceld")
@@ -16,7 +16,7 @@ export default function NewList() {
     }
 
     function makeNewList() {
-        console.log("new list is made")
+        addListToFS(userUID)
         setIsOpen(false)
     }
 
