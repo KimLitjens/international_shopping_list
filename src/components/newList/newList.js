@@ -8,16 +8,19 @@ import styles from './styles.newList'
 export default function NewList() {
     const userInfo = useAuth();
     const userUID = userInfo.currentUser.uid
-    let [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(false)
+    const [newListTitle, setNewListTitle] = useState("")
 
     function cancelNewList() {
         console.log("New list is canceld")
         setIsOpen(false)
+        setNewListTitle("")
     }
 
     function makeNewList() {
-        addListToFS(userUID)
+        addListToFS(userUID, newListTitle)
         setIsOpen(false)
+        setNewListTitle("")
     }
 
     function openModal() {
@@ -78,7 +81,7 @@ export default function NewList() {
                                     Titel of your new list:
                                 </Dialog.Title>
                                 <div className="mt-2">
-                                    <input type="text" />
+                                    <input onInput={e => setNewListTitle(e.target.value)} type="text" />
                                 </div>
 
                                 <div className="mt-4 flex justify-between">

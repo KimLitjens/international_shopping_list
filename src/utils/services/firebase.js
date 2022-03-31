@@ -61,8 +61,10 @@ export async function getUsersListsFromFS(userUID) {
     return fetchedLists
 }
 
-export async function addListToFS(userUID) {
-    const listsUUID = uuid()
+export async function addListToFS(userUID, listTitel) {
+    const dateInMS = Date.now()
+    const UUID = uuid()
+    const listsUUID = `${dateInMS}-${UUID}`
     const docRef = doc(db, "lists", listsUUID);
 
     await setDoc(docRef, {
@@ -70,7 +72,7 @@ export async function addListToFS(userUID) {
         docId: listsUUID,
         hiddenLanguages: [],
         listItems: [],
-        listTitle: "",
+        listTitle: listTitel,
         shownLanguages: [],
         users: []
     })
