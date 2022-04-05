@@ -34,7 +34,7 @@ export default function ColumnTitles({
                 <h3>Qty</h3>
             </div>
             <div className={styles.languagesDiv}>
-                {shownLanguages.map(language => {
+                {shownLanguages && shownLanguages.map(language => {
                     return <div key={language} className={styles.languagesTitleDiv}>
                         <button
                             onClick={() => moveLanguage(language, "moveToHidden")}>
@@ -49,7 +49,7 @@ export default function ColumnTitles({
                     onClick={showHiddenLanguages}>
                     <h2 className={styles.addButton}>+</h2>
                 </button>
-                {hiddenLanguages.map(language => {
+                {hiddenLanguages && hiddenLanguages.map(language => {
                     return <div key={language} className={styles.hiddenLanguages({ showHiddenLanguagesList })}>
                         <button
                             onClick={() => moveLanguage(language, "moveToShown")}><p>{language}</p></button>

@@ -15,7 +15,7 @@ export default function ListForm({
             onSubmit={handleSubmit(onSubmit)}
             onInput={e => setSearchQuery(e.target.value.toLowerCase())}
         >
-            {shownLanguages.map(language => {
+            {shownLanguages && shownLanguages.map(language => {
                 return <input
                     key={language}
                     className={styles.input}
