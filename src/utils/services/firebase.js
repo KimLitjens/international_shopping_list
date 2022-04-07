@@ -1,5 +1,12 @@
 import { db } from '../../firebase'
-import { collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    setDoc,
+    updateDoc,
+} from 'firebase/firestore';
 import { uuid } from 'uuidv4'
 
 export async function getListItemsFromFS(userUID) {
@@ -61,7 +68,7 @@ export async function getSelectedListFromFS(selectedListUID) {
     return selectedListInfo
 }
 
-export async function getUsersListsFromFS(userUID) {
+export async function getUsersListsUIDFromFS(userUID) {
     const docRef = doc(db, "users", userUID);
     const docSnap = await getDoc(docRef);
     let fetchedLists = []
@@ -72,6 +79,17 @@ export async function getUsersListsFromFS(userUID) {
         console.log("No such document!");
     }
     return fetchedLists
+}
+
+export async function getUsersListsInfoFromFS(lists) {
+    const usersListsInfo = []
+    const querySnapshot = await getDocs(collection(db, "lists"));
+    querySnapshot.forEach((doc) => {
+        if (lists.includes(doc.data().docId)) {
+            usersListsInfo.push(doc.data())
+        }
+    })
+    return usersListsInfo
 }
 
 export async function addListToFS(userUID, listTitel) {
@@ -92,3 +110,4 @@ export async function addListToFS(userUID, listTitel) {
     console.log("new list is made")
 
 }
+

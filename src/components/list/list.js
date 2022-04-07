@@ -31,7 +31,7 @@ export default function List({ selectedListUID }) {
     const [searchQuery, setSearchQuery] = useState(querys || '');
     const [selectedListInfo, setSelectedListInfo] = useState([])
     const [filterdProducts, setfilterdProducts] = useState([])
-    const listTitle = selectedListInfo.title
+    const listTitle = selectedListInfo.listTitle
     const [shoppingList, setShoppingList] = useState([])
     const [shoppingListFetched, setshoppingListFetched] = useState(false)
     const [shownLanguages, setShownLanguages] = useState([])
