@@ -95,7 +95,7 @@ export default function List({ selectedListUID }) {
     }, [shoppingList, searchQuery]);
 
     useEffect(() => {
-        shoppingListFetched && saveShoppingListInFS(shoppingList)
+        shoppingListFetched && saveShoppingListInFS(shoppingList, selectedListUID)
     }, [shoppingList])
 
     useEffect(() => {
@@ -113,7 +113,7 @@ export default function List({ selectedListUID }) {
                 hiddenLanguages={hiddenLanguages}
                 setHiddenLanguages={setHiddenLanguages}
             />
-            List products
+            {/* List products */}
             {filterdProducts && filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
                 return <ListItem
                     product={product}
