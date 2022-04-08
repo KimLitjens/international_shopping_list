@@ -48,8 +48,8 @@ export async function getLanguagesFromFS(userUID) {
     return { shownLanguages: shownLanguages, hiddenLanguages: hiddenLanguages }
 }
 
-export async function saveShoppingListInFS(shoppingList) {
-    const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
+export async function saveShoppingListInFS(shoppingList, selectedListUID) {
+    const docRef = doc(db, "lists", selectedListUID);
     await updateDoc(docRef, {
         listItems: shoppingList
     });
