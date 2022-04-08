@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { Header, List } from '../components'
+import {
+    Header,
+    List,
+    ListTitles,
+} from '../components'
 import {
     getUsersListsUIDFromFS,
     getUsersListsInfoFromFS
@@ -48,21 +52,11 @@ export default function Homepage() {
         <div className="min-h-screen bg-gray-200 dark:bg-dark-third">
             <Header />
             {selectedListUID ? <List selectedListUID={selectedListUID} />
-                : usersListsUID.length > 1 ? usersListsInfos.map(list => <div>
-                    <button
-                        className=" py-1 px-3 ml-2 my-2
-                                        bg-accent text-dark text-xs uppercase font-black
-                                         rounded inline-block 
-                                        cursor-pointer tracking-widest 
-                                        transition duration-200 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-                        onClick={() => selectList(list)}
-                    >
-                        <p className="">
-                            {list.listTitle}
-                        </p>
-                    </button>
-
-                </div>)
+                : usersListsUID.length > 1 ?
+                    usersListsInfos.map(list => <ListTitles
+                        list={list}
+                        selectList={selectList}
+                    />)
                     : <p className="text-center text-accent">Now List Found </p>
             }
         </div>
