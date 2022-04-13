@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 
 import {
     Header,
@@ -17,15 +18,16 @@ export default function Homepage() {
     const userUID = auth?.currentUser?.uid
     const [usersListsUID, setUsersListsUID] = useState([])
     const [usersListsInfos, setUsersListsInfos] = useState([])
-    const [selectedListUID, setSelectedListUID] = useState("")
+    const [cookies, setCookies] = useCookies(['selectedList'])
+    const selectedListUID = cookies.selectedList
 
     // get users lists from FireStore
     const getUsersListsUID = async () => {
         const usersLists = await getUsersListsUIDFromFS(userUID)
-        setUsersListsUID(usersLists)
-        usersLists.length === 1 ? setSelectedListUID(usersLists[0])
-            : setSelectedListUID("")
+        usersLists.length === 1 ? setCookies('selectedList', usersLists[0], { path: '/' })
+            : setUsersListsUID(usersLists)
     }
+
     // get all info from users Lists 
     const getListInfoFromFS = async () => {
         const usersListsInfos = await getUsersListsInfoFromFS(usersListsUID)
@@ -33,7 +35,7 @@ export default function Homepage() {
     }
 
     const selectList = (list) => {
-        setSelectedListUID(list.docId)
+        setCookies('selectedList', list.docId, { path: '/' })
     }
 
     useEffect(() => {
@@ -47,6 +49,7 @@ export default function Homepage() {
     useEffect(() => {
         usersListsUID.length > 1 && getListInfoFromFS()
     }, [usersListsUID])
+    console.log(selectedListUID)
 
     return (
         <div className="min-h-screen bg-gray-200 dark:bg-dark-third">
@@ -62,4 +65,5 @@ export default function Homepage() {
         </div>
     )
 }
+
 
