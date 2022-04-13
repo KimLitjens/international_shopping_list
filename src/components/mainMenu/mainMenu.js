@@ -1,6 +1,7 @@
 import React from 'react'
 
 import {
+    ChooseList,
     SignOutButton,
     NewList,
 
@@ -9,6 +10,7 @@ import {
 export default function MainMenu() {
     return (
         <div>
+            <ChooseList />
             <NewList />
             <SignOutButton />
         </div>

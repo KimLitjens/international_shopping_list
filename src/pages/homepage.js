@@ -49,7 +49,6 @@ export default function Homepage() {
     useEffect(() => {
         usersListsUID.length > 1 && getListInfoFromFS()
     }, [usersListsUID])
-    console.log(selectedListUID)
 
     return (
         <div className="min-h-screen bg-gray-200 dark:bg-dark-third">
