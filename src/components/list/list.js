@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react'
 
 import { useForm } from 'react-hook-form'
-import { useAuth } from '../../utils/hooks/useAuth'
 import {
     ColumnTitles,
     ListItem,
@@ -11,13 +10,11 @@ import {
 import styles from './list.styles'
 
 import {
-    getLanguagesFromFS,
-    getListItemsFromFS,
-    getListTitleFromFS,
-    saveShoppingListInFS
+    saveShoppingListInFS,
+    getSelectedListFromFS
 } from '../../utils/services/firebase'
 
-export default function List() {
+export default function List({ selectedListUID }) {
     const { register,
         handleSubmit,
         reset,
@@ -32,39 +29,33 @@ export default function List() {
     const { search } = window.location;
     const querys = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(querys || '');
+    const [selectedListInfo, setSelectedListInfo] = useState([])
     const [filterdProducts, setfilterdProducts] = useState([])
-    const [listTitle, setListTitle] = useState('')
+    const listTitle = selectedListInfo.listTitle
     const [shoppingList, setShoppingList] = useState([])
     const [shoppingListFetched, setshoppingListFetched] = useState(false)
-    const [noListFound, setNoListFound] = useState(false)
     const [shownLanguages, setShownLanguages] = useState([])
     const [hiddenLanguages, setHiddenLanguages] = useState([])
 
-    const userInfo = useAuth();
-    const [auth, setAuth] = useState({});
-    const userUID = auth?.currentUser?.uid
+    //Get selected listinfo from firestore
+    const getSelectedList = async () => {
+        const selectedListInfo = await getSelectedListFromFS(selectedListUID)
+        setSelectedListInfo(selectedListInfo)
+    }
 
-    // Get al products from FireStore
+    // set al products from products
     const getProducts = async () => {
-        const listItems = await getListItemsFromFS(userUID)
+        const listItems = await selectedListInfo.listItems
         setShoppingList(listItems)
-        setNoListFound(!listItems.length ? true : false)
         setshoppingListFetched(true)
     }
 
-    // Get languages from Firestore
-    const getLanguages = async () => {
-        const languages = await getLanguagesFromFS(userUID)
-        setShownLanguages(languages.shownLanguages)
-        setHiddenLanguages(languages.hiddenLanguages)
+    // set languages
+    const setLanguages = () => {
+        setShownLanguages(selectedListInfo.shownLanguages)
+        setHiddenLanguages(selectedListInfo.hiddenLanguages)
     }
-
-    // Get list Title from firestore
-    const getListTitle = async () => {
-        const listTitle = await getListTitleFromFS(userUID)
-        setListTitle(listTitle)
-    }
-    // Filter the list by product name
+    // filter products
     const filterProducts = (shoppingList, searchQuery) => {
         const filterdList = () => {
             if (!searchQuery) {
@@ -95,22 +86,21 @@ export default function List() {
     }
 
     useEffect(() => {
-        setAuth(userInfo)
-    }, [userInfo]);
-
-    useEffect(() => {
-        getLanguages()
-        getListTitle()
+        setLanguages()
         getProducts()
-    }, [userUID])
+    }, [selectedListInfo])
 
     useEffect(() => {
         filterProducts(shoppingList, searchQuery)
     }, [shoppingList, searchQuery]);
 
     useEffect(() => {
-        shoppingListFetched && saveShoppingListInFS(shoppingList)
+        shoppingListFetched && saveShoppingListInFS(shoppingList, selectedListUID)
     }, [shoppingList])
+
+    useEffect(() => {
+        getSelectedList()
+    }, selectedListUID)
 
     return (
         <div className={styles.div}>
@@ -123,8 +113,8 @@ export default function List() {
                 hiddenLanguages={hiddenLanguages}
                 setHiddenLanguages={setHiddenLanguages}
             />
-            {/* List products  */}
-            {filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
+            {/* List products */}
+            {filterdProducts && filterdProducts.filter(product => !product.checked && !product.deleted).map(product => {
                 return <ListItem
                     product={product}
                     shoppingList={shoppingList}
@@ -133,8 +123,6 @@ export default function List() {
                     key={product.id}
                 />
             })}
-            {/* Message when no list is found */}
-            {noListFound && <h2>No List Found</h2>}
             {/* Submit item to List */}
             <ListForm
                 onSubmit={onSubmit}
@@ -145,23 +133,14 @@ export default function List() {
                 shownLanguages={shownLanguages}
             />
             {/* Column Titles from checked list */}
+            <ColumnTitles
+                shownLanguages={shownLanguages}
+                setShownLanguages={setShownLanguages}
+                hiddenLanguages={hiddenLanguages}
+                setHiddenLanguages={setHiddenLanguages}
+            />
 
-            <div className={styles.listTitles}>
-                <div></div>
-                <div className="text-center underline">
-                    <h3>Qty</h3>
-                </div>
-                {shownLanguages.map(language => {
-                    return <div
-                        key={language}
-                        className="col-span-3 text-center underline">
-                        <h3>{language}</h3>
-                    </div>
-                })}
-                <div></div>
-            </div>
-
-            {filterdProducts.filter(product => product.checked && !product.deleted).map(product => {
+            {filterdProducts && filterdProducts.filter(product => product.checked && !product.deleted).map(product => {
                 return <ListItem
                     product={product}
                     shoppingList={shoppingList}

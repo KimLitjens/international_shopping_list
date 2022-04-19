@@ -1,12 +1,21 @@
 import { db } from '../../firebase'
-import { collection, doc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    setDoc,
+    updateDoc,
+} from 'firebase/firestore';
+import { uuid } from 'uuidv4'
 
 export async function getListItemsFromFS(userUID) {
     const listItems = []
     const querySnapshot = await getDocs(collection(db, "lists"));
 
     querySnapshot.forEach((doc) => {
-        if (doc.data().adminId === "backup" || doc.data()?.users?.includes(userUID)) {
+        if (doc.data().adminId === userUID || doc.data()?.users?.includes(userUID)) {
+            console.log(doc.data())
             doc.data().listItems?.map(item => listItems.push(item))
         }
     });
@@ -39,23 +48,66 @@ export async function getLanguagesFromFS(userUID) {
     return { shownLanguages: shownLanguages, hiddenLanguages: hiddenLanguages }
 }
 
-export async function saveShoppingListInFS(shoppingList) {
-    const docRef = doc(db, "lists", "4Ny1Rshg58TG1V6yl6ZM");
+export async function saveShoppingListInFS(shoppingList, selectedListUID) {
+    const docRef = doc(db, "lists", selectedListUID);
     await updateDoc(docRef, {
         listItems: shoppingList
     });
 }
 
-export async function getUsersListsFromFS(userUID) {
-    const docRef = doc(db, "users", userUID);
+export async function getSelectedListFromFS(selectedListUID) {
+    const docRef = doc(db, "lists", selectedListUID);
     const docSnap = await getDoc(docRef);
-    const fetchedLists = []
+    let selectedListInfo = []
 
     if (docSnap.exists()) {
-        await docSnap.data().lists.map(list => fetchedLists.push(list));
+        selectedListInfo = docSnap.data();
     } else {
-        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
+    return selectedListInfo
+}
+
+export async function getUsersListsUIDFromFS(userUID) {
+    const docRef = doc(db, "users", userUID);
+    const docSnap = await getDoc(docRef);
+    let fetchedLists = []
+
+    if (docSnap.exists()) {
+        fetchedLists = docSnap.data().lists;
+    } else {
         console.log("No such document!");
     }
     return fetchedLists
 }
+
+export async function getUsersListsInfoFromFS(lists) {
+    const usersListsInfo = []
+    const querySnapshot = await getDocs(collection(db, "lists"));
+    querySnapshot.forEach((doc) => {
+        if (lists.includes(doc.data().docId)) {
+            usersListsInfo.push(doc.data())
+        }
+    })
+    return usersListsInfo
+}
+
+export async function addListToFS(userUID, listTitel) {
+    const dateInMS = Date.now()
+    const UUID = uuid()
+    const listsUUID = `${dateInMS}-${UUID}`
+    const docRef = doc(db, "lists", listsUUID);
+
+    await setDoc(docRef, {
+        adminId: userUID,
+        docId: listsUUID,
+        hiddenLanguages: [],
+        listItems: [],
+        listTitle: listTitel,
+        shownLanguages: [],
+        users: []
+    })
+    console.log("new list is made")
+
+}
+

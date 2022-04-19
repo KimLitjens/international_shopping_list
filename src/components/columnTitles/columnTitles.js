@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import styles from './columnTitles.styles'
 
 export default function ColumnTitles({
     hiddenLanguages,
@@ -27,14 +28,14 @@ export default function ColumnTitles({
     }
 
     return (
-        <div className={`w-10/12 grid grid-cols-12 gap-4 text-accent`}>
+        <div className={styles.div}>
             <div></div>
-            <div className="text-center underline">
+            <div className={styles.qtyTitle}>
                 <h3>Qty</h3>
             </div>
-            <div className={"flex col-span-9 justify-around"}>
-                {shownLanguages.map(language => {
-                    return <div key={language} className="col-span-3 text-center underline">
+            <div className={styles.languagesDiv}>
+                {shownLanguages && shownLanguages.map(language => {
+                    return <div key={language} className={styles.languagesTitleDiv}>
                         <button
                             onClick={() => moveLanguage(language, "moveToHidden")}>
                             <h3>{language}</h3>
@@ -46,26 +47,17 @@ export default function ColumnTitles({
             <div>
                 <button
                     onClick={showHiddenLanguages}>
-                    <h2 className="text-center">+</h2>
+                    <h2 className={styles.addButton}>+</h2>
                 </button>
-                {hiddenLanguages.map(language => {
-                    return <div key={language} className={`${!showHiddenLanguagesList ? "hidden" : null}`}>
+                {hiddenLanguages && hiddenLanguages.map(language => {
+                    return <div key={language} className={styles.hiddenLanguages({ showHiddenLanguagesList })}>
                         <button
                             onClick={() => moveLanguage(language, "moveToShown")}><p>{language}</p></button>
                     </div>
                 })}
                 <input
                     placeholder="Add New"
-                    className={`${!showHiddenLanguagesList ? "hidden" : null}
-                        w-20
-                        placeholder-gray-700
-                        bg-transparent border-0 border-b-2 border-accent
-                        appearance-none 
-                        focus:outline-none 
-                        focus:ring-0 
-                        focus:border-yellow-500 
-                        dark:placeholder-dark-secondAccent
-                        dark:border-dark-accent`} />
+                    className={styles.addLanguageInput({ showHiddenLanguagesList })} />
             </div>
         </div>
     )
