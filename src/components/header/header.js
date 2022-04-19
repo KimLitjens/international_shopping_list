@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 
 import styles from './header.styles'
 import {
+    DropDownMenu,
     MainMenu,
     Switch,
 } from '..'
@@ -32,7 +33,8 @@ export default function Header() {
                 setIsDarkMode={setIsDarkMode}
             />
             <h2 className={styles.welcome}>{welcomeMessage}</h2>
-            <MainMenu />
+            {/* <MainMenu /> */}
+            <DropDownMenu />
         </div>
     )
 }

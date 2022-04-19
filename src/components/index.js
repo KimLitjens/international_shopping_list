@@ -1,5 +1,6 @@
 export { default as ColumnTitles } from './columnTitles/columnTitles'
 export { default as ChooseList } from './chooseList/chooseList'
+export { default as DropDownMenu } from './dropDownMenu/dropDownMenu'
 export { default as Header } from './header/header'
 export { default as List } from './list/list'
 export { default as ListItem } from './listItem/listItem'
