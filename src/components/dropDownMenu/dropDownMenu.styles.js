@@ -1,6 +1,6 @@
 const styles = {
     div: [
-        `w-56 text-right mr-2`
+        `mr-2`
     ],
     menu: [
         `relative inline-block text-left`

@@ -13,12 +13,15 @@ export default function SignOutButton() {
         });
     };
     return (
-        <button
-            onClick={signUserOut}
-            type="submit"
-            className={styles.button}
-        >
-            Sign Out
-        </button>
+        <div className="grid">
+            <button
+                onClick={signUserOut}
+                type="submit"
+                className={styles.button}
+            >
+                Sign Out
+            </button>
+        </div>
+
     );
 }
