@@ -8,7 +8,7 @@ export default function ListTitles({ list, selectList }) {
                 className={styles.button}
                 onClick={() => selectList(list)}
             >
-                <p className="">
+                <p>
                     {list.listTitle}
                 </p>
             </button>
