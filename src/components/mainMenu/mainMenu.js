@@ -4,7 +4,6 @@ import {
     ChooseList,
     SignOutButton,
     NewList,
-
 } from '../'
 
 export default function MainMenu() {

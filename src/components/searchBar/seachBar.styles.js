@@ -1,12 +1,10 @@
 const styles = {
     span: [
-        "hidden",
-    ].join(' '),
+        `hidden`,
+    ],
     button: [
-        "bg-accent",
-        "px-2",
-        "mx-2",
-    ].join(' ')
+        `bg-accent px-2 mx-2`
+    ]
 }
 
 export default styles

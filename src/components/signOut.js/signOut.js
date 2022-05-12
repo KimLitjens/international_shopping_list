@@ -9,7 +9,7 @@ export default function SignOutButton() {
         signOut(auth).then(() => {
 
         }).catch((error) => {
-            // An error happened.
+            console.log(error)
         });
     };
     return (
