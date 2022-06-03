@@ -112,7 +112,7 @@ export default function ListItem({
                     />
                 </div>
 
-                <div className={"flex flex-col md:flex-row col-span-9 justify-around"}>
+                <div className={styles.languagesDiv}>
                     {shownLanguages.map(choosenLanguage => <div className={styles.divEditing}>
                         <span className={styles.inputLabel}>
                             <p>{choosenLanguage}: </p>

@@ -26,6 +26,9 @@ const styles = {
         md:${!editing ? `hidden` : null} 
         md:grid grid-cols-12 md:gap-4 my-4`
     ],
+    languagesDiv: [
+        `flex flex-col md:flex-row col-span-9 justify-around`
+    ],
     quantityEditing: [
         ` w-16   
         text-yellow-700

@@ -1,4 +1,7 @@
 const styles = {
+    form: [
+        `justify-self-center`
+    ],
     span: [
         `hidden`,
     ],

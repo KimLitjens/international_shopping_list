@@ -1,4 +1,7 @@
 const styles = {
+    div: [
+        `grid`
+    ],
     button: [
         `py-1 px-3 mx-2 mb-2 
           font-bold text-m  justify-self-center

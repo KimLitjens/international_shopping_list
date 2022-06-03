@@ -13,7 +13,7 @@ export default function SignOutButton() {
         });
     };
     return (
-        <div className="grid">
+        <div className={styles.div}>
             <button
                 onClick={signUserOut}
                 type="submit"
