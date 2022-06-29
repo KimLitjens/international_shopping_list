@@ -33,9 +33,6 @@ export default function NewList() {
                 <button
                     type="button"
                     onClick={openModal}
-                    //     className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 
-                    // hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white 
-                    // focus-visible:ring-opacity-75"
                     className={styles.button}
                 >
                     Add new list
@@ -45,10 +42,10 @@ export default function NewList() {
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog
                     as="div"
-                    className="fixed inset-0 z-10 overflow-y-auto"
+                    className={styles.dialog}
                     onClose={cancelNewList}
                 >
-                    <div className="min-h-screen px-4 text-center">
+                    <div className={styles.dialogDiv}>
                         <Transition.Child
                             as={Fragment}
                             enter="ease-out duration-300"
@@ -58,11 +55,11 @@ export default function NewList() {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                         >
-                            <Dialog.Overlay className="fixed inset-0" />
+                            <Dialog.Overlay className={styles.dialogOverlay} />
                         </Transition.Child>
 
                         <span
-                            className="inline-block h-screen align-middle"
+                            className={styles.dialogSpan}
                             aria-hidden="true"
                         >
                             &#8203;
@@ -76,28 +73,28 @@ export default function NewList() {
                             leaveFrom="opacity-100 scale-100"
                             leaveTo="opacity-0 scale-95"
                         >
-                            <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-center align-middle transition-all transform bg-accent shadow-xl rounded-2xl">
+                            <div className={styles.dialogDivTitle}>
                                 <Dialog.Title
                                     as="h3"
-                                    className="text-lg font-medium leading-6 text-first"
+                                    className={styles.dialogTitle}
                                 >
                                     Titel of your new list:
                                 </Dialog.Title>
-                                <div className="mt-2">
+                                <div className={styles.dialogDivInput}>
                                     <input onInput={e => setNewListTitle(e.target.value)} type="text" />
                                 </div>
 
-                                <div className="mt-4 flex justify-between">
+                                <div className={styles.dialogDivButton}>
                                     <button
                                         type="button"
-                                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                        className={styles.dialogButtonCancel}
                                         onClick={cancelNewList}
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="button"
-                                        className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                                        className={styles.dialogButtonSave}
                                         onClick={makeNewList}
                                     >
                                         Save

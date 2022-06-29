@@ -1,6 +1,6 @@
 const styles = {
     div: [
-        `w-56 text-right mr-2`
+        `mr-2`
     ],
     menu: [
         `relative inline-block text-left`
@@ -15,8 +15,8 @@ const styles = {
         `w-5 h-5 ml-2 -mr-1 text-violet-200 hover:text-violet-100`
     ],
     menuItems: [
-        `absolute right-0 w-56 mt-2 origin-top-right bg-accent bg-opacity-30
-        divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 
+        `absolute right-0 w-56 mt-2 origin-top-right bg-dark-accent 
+        z-50 divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 
         focus:outline-none`
     ],
     menuItemsDiv: [

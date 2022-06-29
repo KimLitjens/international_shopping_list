@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import styles from './header.styles'
 import {
     DropDownMenu,
-    MainMenu,
     Switch,
 } from '..'
 import { useAuth } from '../../utils/hooks/useAuth'
@@ -33,7 +32,6 @@ export default function Header() {
                 setIsDarkMode={setIsDarkMode}
             />
             <h2 className={styles.welcome}>{welcomeMessage}</h2>
-            {/* <MainMenu /> */}
             <DropDownMenu />
         </div>
     )

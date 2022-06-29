@@ -9,16 +9,19 @@ export default function SignOutButton() {
         signOut(auth).then(() => {
 
         }).catch((error) => {
-            // An error happened.
+            console.log(error)
         });
     };
     return (
-        <button
-            onClick={signUserOut}
-            type="submit"
-            className={styles.button}
-        >
-            Sign Out
-        </button>
+        <div className={styles.div}>
+            <button
+                onClick={signUserOut}
+                type="submit"
+                className={styles.button}
+            >
+                Sign Out
+            </button>
+        </div>
+
     );
 }

@@ -1,5 +1,6 @@
 import { db } from '../../firebase'
 import {
+    arrayUnion,
     collection,
     doc,
     getDoc,
@@ -96,9 +97,10 @@ export async function addListToFS(userUID, listTitel) {
     const dateInMS = Date.now()
     const UUID = uuid()
     const listsUUID = `${dateInMS}-${UUID}`
-    const docRef = doc(db, "lists", listsUUID);
+    const docRefList = doc(db, "lists", listsUUID);
+    const docRefUser = doc(db, "users", userUID)
 
-    await setDoc(docRef, {
+    await setDoc(docRefList, {
         adminId: userUID,
         docId: listsUUID,
         hiddenLanguages: [],
@@ -107,7 +109,9 @@ export async function addListToFS(userUID, listTitel) {
         shownLanguages: [],
         users: []
     })
+
+    await updateDoc(docRefUser, {
+        lists: arrayUnion(listsUUID)
+    })
     console.log("new list is made")
-
 }
-

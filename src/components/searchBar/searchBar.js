@@ -1,7 +1,7 @@
 import styles from './seachBar.styles'
 
 const SearchBar = ({ clearInputField, searchQuery, setSearchQuery }) => (
-    <form className="justify-self-center" action="/" method="get">
+    <form className={styles.form} action="/" method="get">
         <label htmlFor="header-search">
 
         </label>
