@@ -24,7 +24,6 @@ export default function ListForm({
             }
             )}
             {errors.exampleRequired && <span>This field is required</span>}
-
             <input className={styles.submit} type="submit" />
         </form>
     )

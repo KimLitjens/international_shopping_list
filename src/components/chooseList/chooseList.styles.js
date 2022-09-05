@@ -8,7 +8,6 @@ const styles = {
         hover:text-white dark:hover:text-dark-first
     `
     ],
-
 }
 
 export default styles

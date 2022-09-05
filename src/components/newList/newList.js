@@ -83,7 +83,6 @@ export default function NewList() {
                                 <div className={styles.dialogDivInput}>
                                     <input onInput={e => setNewListTitle(e.target.value)} type="text" />
                                 </div>
-
                                 <div className={styles.dialogDivButton}>
                                     <button
                                         type="button"

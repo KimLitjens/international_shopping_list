@@ -3,8 +3,7 @@ const styles = {
         `ml-4 flex self-center text-center`
     ],
     div: [
-        `flex justify-between 
-        py-4
+        `flex justify-between py-4
         bg-first dark:bg-dark-first dark:text-dark-secondAccent`
     ],
     h1: [

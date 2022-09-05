@@ -22,6 +22,5 @@ export default function SignOutButton() {
                 Sign Out
             </button>
         </div>
-
     );
 }

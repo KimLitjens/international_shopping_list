@@ -43,7 +43,6 @@ export default function ColumnTitles({
                     </div>
                 })}
             </div>
-
             <div>
                 <button
                     onClick={showHiddenLanguages}>

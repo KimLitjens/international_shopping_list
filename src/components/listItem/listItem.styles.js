@@ -30,15 +30,15 @@ const styles = {
         `flex flex-col md:flex-row col-span-9 justify-around`
     ],
     quantityEditing: [
-        ` w-16   
+        `w-16   
         text-yellow-700
-            placeholder-gray-700
-            bg-transparent border-0 border-b-2 border-gray-800 
-            appearance-none 
-            focus:outline-none 
-            focus:ring-0 
-            focus:border-yellow-500 
-            md:mr-2
+        placeholder-gray-700
+        bg-transparent border-0 border-b-2 border-gray-800 
+        appearance-none 
+        focus:outline-none 
+        focus:ring-0 
+        focus:border-yellow-500 
+        md:mr-2
         `
     ],
     divEditing: [
@@ -55,8 +55,7 @@ const styles = {
         `
     ],
     inputLabel: [
-        `mr-2 md:hidden
-         `
+        `mr-2 md:hidden`
     ],
     button: [
         `mx-2 

@@ -111,7 +111,6 @@ export default function ListItem({
                         onKeyDown={handleUpdatedDone}
                     />
                 </div>
-
                 <div className={styles.languagesDiv}>
                     {shownLanguages.map(choosenLanguage => <div className={styles.divEditing}>
                         <span className={styles.inputLabel}>

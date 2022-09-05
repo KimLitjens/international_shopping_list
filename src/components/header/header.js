@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 
-
 import styles from './header.styles'
 import {
     DropDownMenu,
@@ -25,6 +24,7 @@ export default function Header() {
     const welcomeMessage = auth?.currentUser?.displayName
         ? `Welcome ${auth?.currentUser?.displayName}`
         : 'Welcome';
+
     return (
         <div className={styles.div}>
             <Switch
