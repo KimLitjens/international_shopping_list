@@ -23,7 +23,6 @@ const useProvideAuth = () => {
                 setCurrentUser({})
             }
         })
-
         return () => unsubscribe()
     }, [])
 
