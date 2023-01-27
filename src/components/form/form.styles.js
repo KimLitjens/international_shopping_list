@@ -27,7 +27,8 @@ const styles = {
         `text-red-500 my-1`
     ],
     Submit: [
-        `w-full text-center py-3 rounded bg-yellow-500 text-white hover:bg-green-dark focus:outline-none my-1`
+        `w-full text-center py-3 rounded bg-yellow-500 text-white 
+        hover:bg-green-dark focus:outline-none my-1`
     ],
     Footer: [
         `text-grey-dark mt-6`

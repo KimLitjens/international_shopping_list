@@ -30,7 +30,6 @@ export default function Form({ type }) {
                     updateProfile(user, {
                         displayName: data.username
                     })
-
                     setDoc(doc(db, 'users', user.uid), {
                         userId: user.uid,
                         username: data.username.toLowerCase(),
@@ -40,8 +39,6 @@ export default function Form({ type }) {
                         dateCreated: Date.now(),
                         lists: []
                     })
-
-
                 })
                 .catch((error) => {
                     console.log(error)

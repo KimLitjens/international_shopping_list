@@ -3,7 +3,6 @@ import styles from './seachBar.styles'
 const SearchBar = ({ clearInputField, searchQuery, setSearchQuery }) => (
     <form className={styles.form} action="/" method="get">
         <label htmlFor="header-search">
-
         </label>
         <input
             onInput={e => setSearchQuery(e.target.value.toLowerCase())}
