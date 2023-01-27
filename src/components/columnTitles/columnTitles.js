@@ -7,6 +7,7 @@ export default function ColumnTitles({
     shownLanguages,
     setShownLanguages }) {
     const [showHiddenLanguagesList, setShowHiddenLanguagesList] = useState(false)
+    const [newLanguage, setNewLanguage] = useState()
     const showHiddenLanguages = () => {
         setShowHiddenLanguagesList(!showHiddenLanguagesList)
     }
@@ -27,6 +28,18 @@ export default function ColumnTitles({
         setShowHiddenLanguagesList(false)
     }
 
+    const enterPressed = async (event) => {
+        if (event.key == "Enter" && newLanguage) {
+            await hiddenLanguages.push(newLanguage)
+            setNewLanguage('')
+            event.target.value = ""
+        }
+    }
+
+    const handleOnchange = async (event) => {
+        setNewLanguage(event.target.value)
+    }
+
     return (
         <div className={styles.div}>
             <div></div>
@@ -36,9 +49,11 @@ export default function ColumnTitles({
             <div className={styles.languagesDiv}>
                 {shownLanguages && shownLanguages.map(language => {
                     return <div key={language} className={styles.languagesTitleDiv}>
+                        <p className={styles.languageName} > {language} </p>
                         <button
+                            className={styles.moveToHiddenButton}
                             onClick={() => moveLanguage(language, "moveToHidden")}>
-                            <h3>{language}</h3>
+                            <p> x </p>
                         </button>
                     </div>
                 })}
@@ -54,9 +69,16 @@ export default function ColumnTitles({
                             onClick={() => moveLanguage(language, "moveToShown")}><p>{language}</p></button>
                     </div>
                 })}
+                {/* TODO add button to add language  */}
                 <input
                     placeholder="Add New"
-                    className={styles.addLanguageInput({ showHiddenLanguagesList })} />
+                    className={styles.addLanguageInput({ showHiddenLanguagesList })}
+                    type="text"
+                    onChange={e => {
+                        handleOnchange(e)
+                    }}
+                    onKeyDown={enterPressed}
+                />
             </div>
         </div>
     )

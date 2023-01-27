@@ -9,7 +9,13 @@ const styles = {
         `flex col-span-9 justify-around`
     ],
     languagesTitleDiv: [
-        `col-span-3 text-center underline`
+        `col-span-3 text-center underline flex group`
+    ],
+    languageName: [
+        `mr-2 my-auto`
+    ],
+    moveToHiddenButton: [
+        `invisible group-hover:visible`
     ],
     addButton: [
         `text-center`
