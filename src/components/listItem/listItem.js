@@ -55,7 +55,6 @@ export default function ListItem({
         await productList.map(product => product.id === +item.target.id ? product.checked = !product.checked : null)
         setShoppingList(productList)
     }
-    console.log(editingList)
     return (
         <>
             <div className={styles.div({ editing })} >

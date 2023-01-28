@@ -70,6 +70,8 @@ export default function List({ selectedListUID }) {
     };
 
     const onSubmit = product => {
+        const objectsValues = Object.values(product)
+        console.log(objectsValues.every(e => e == ""))
         const newListItem = {
             productNames: product,
             checked: false,
