@@ -19,13 +19,13 @@ export default function List({ selectedListUID }) {
         handleSubmit,
         reset,
         setFocus,
-        formState: { errors } } = useForm({
-            defaultValues: {
-                French: '',
-                German: '',
-                Dutch: ''
-            }
-        });
+    } = useForm({
+        defaultValues: {
+            French: '',
+            German: '',
+            Dutch: ''
+        }
+    });
     const { search } = window.location;
     const querys = new URLSearchParams(search).get('s');
     const [searchQuery, setSearchQuery] = useState(querys || '');
@@ -36,6 +36,7 @@ export default function List({ selectedListUID }) {
     const [shoppingListFetched, setshoppingListFetched] = useState(false)
     const [shownLanguages, setShownLanguages] = useState([])
     const [hiddenLanguages, setHiddenLanguages] = useState([])
+    const [languageIsFilled, setLanguageIsFilled] = useState(true)
 
     //Get selected listinfo from firestore
     const getSelectedList = async () => {
@@ -70,21 +71,28 @@ export default function List({ selectedListUID }) {
     };
 
     const onSubmit = product => {
+        setLanguageIsFilled(true)
         const objectsValues = Object.values(product)
-        console.log(objectsValues.every(e => e == ""))
-        const newListItem = {
-            productNames: product,
-            checked: false,
-            id: Date.now(),
-            quantity: '1',
-            status: 'new',
-            deleted: false
+        const nothingIsFilledIn = objectsValues.every(e => e == "")
+        if (!nothingIsFilledIn) {
+            const newListItem = {
+                productNames: product,
+                checked: false,
+                id: Date.now(),
+                quantity: '1',
+                status: 'new',
+                deleted: false
+            }
+            const newShoppingList = [...shoppingList, newListItem]
+            setShoppingList(newShoppingList)
+            reset()
+            setFocus(shownLanguages[0])
+            setSearchQuery('')
+        } else {
+            setLanguageIsFilled(false)
+            console.log("nothing is filled in")
         }
-        const newShoppingList = [...shoppingList, newListItem]
-        setShoppingList(newShoppingList)
-        reset()
-        setFocus(shownLanguages[0])
-        setSearchQuery('')
+
     }
 
     useEffect(() => {
@@ -130,9 +138,9 @@ export default function List({ selectedListUID }) {
                 onSubmit={onSubmit}
                 handleSubmit={handleSubmit}
                 register={register}
-                errors={errors}
                 setSearchQuery={setSearchQuery}
                 shownLanguages={shownLanguages}
+                languageIsFilled={languageIsFilled}
             />
             {/* Column Titles from checked list */}
             <ColumnTitles

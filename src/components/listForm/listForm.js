@@ -5,9 +5,9 @@ export default function ListForm({
     handleSubmit,
     onSubmit,
     register,
-    errors,
     setSearchQuery,
-    shownLanguages
+    shownLanguages,
+    languageIsFilled
 }) {
     return (
         <form
@@ -23,7 +23,7 @@ export default function ListForm({
                     placeholder={language} />
             }
             )}
-            {errors.exampleRequired && <span>This field is required</span>}
+            {!languageIsFilled && <span>One field is required</span>}
             <input className={styles.submit} type="submit" />
         </form>
     )
